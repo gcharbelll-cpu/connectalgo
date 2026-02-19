@@ -1,0 +1,247 @@
+"use client";
+
+import { Strategy } from "@/lib/data/strategies";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { updateStrategy } from "../actions";
+import { useRouter } from "next/navigation";
+import { Save, ArrowLeft, Loader2, Plus, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+interface StrategyFormProps {
+    strategy: Strategy;
+}
+
+export function StrategyForm({ strategy }: StrategyFormProps) {
+    const [formData, setFormData] = useState<Strategy>(strategy);
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        // Handle number inputs
+        if (['roi', 'drawdown', 'winRate', 'price', 'priceSixMonth', 'priceYearly', 'rating', 'subscribers', 'maxSubscribers'].includes(name)) {
+            setFormData(prev => ({ ...prev, [name]: parseFloat(value) || 0 }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await updateStrategy(formData);
+            router.refresh(); // Refresh server data
+            alert("Strategy updated successfully!");
+        } catch (error) {
+            alert("Failed to update strategy");
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="flex items-center justify-between">
+                <Link href="/admin" className="text-slate-400 hover:text-white flex items-center">
+                    <ArrowLeft className="h-4 w-4 mr-2" /> Back to Dashboard
+                </Link>
+                <Button type="submit" disabled={loading} className="bg-emerald-600 hover:bg-emerald-700">
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                    Save Changes
+                </Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <Card className="bg-slate-900 border-slate-800">
+                    <CardHeader>
+                        <CardTitle className="text-white">Basic Info</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Strategy ID (Read-only)</label>
+                            <Input value={formData.id} disabled className="bg-slate-900 border-slate-800 text-slate-500" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Name</label>
+                            <Input name="name" value={formData.name} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Asset Class</label>
+                            <Select
+                                value={formData.assetClass || "Crypto"}
+                                onValueChange={(value) => setFormData(prev => ({ ...prev, assetClass: value as any }))}
+                            >
+                                <SelectTrigger className="bg-slate-950 border-slate-800">
+                                    <SelectValue placeholder="Select asset class" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-slate-900 border-slate-800">
+                                    <SelectItem value="Crypto">Crypto</SelectItem>
+                                    <SelectItem value="Forex">Forex</SelectItem>
+                                    <SelectItem value="Indices">Indices</SelectItem>
+                                    <SelectItem value="Commodities">Commodities</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Asset Subtype</label>
+                            <Input name="assetSubtype" value={formData.assetSubtype || ""} onChange={handleChange} placeholder="e.g. BTC, ETH, EUR/USD" className="bg-slate-950 border-slate-800" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Description</label>
+                            <Textarea name="description" value={formData.description} onChange={handleChange} className="bg-slate-950 border-slate-800 min-h-[100px]" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Tags (comma separated)</label>
+                            <Input
+                                name="tags"
+                                value={formData.tags.join(", ")}
+                                onChange={(e) => setFormData(prev => ({ ...prev, tags: e.target.value.split(",").map(t => t.trim()) }))}
+                                className="bg-slate-950 border-slate-800"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Proven Record URL (TradingView)</label>
+                            <Input
+                                name="provenRecordUrl"
+                                value={formData.provenRecordUrl || ""}
+                                onChange={handleChange}
+                                placeholder="https://www.tradingview.com/..."
+                                className="bg-slate-950 border-slate-800"
+                            />
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-slate-900 border-slate-800">
+                    <CardHeader>
+                        <CardTitle className="text-white">Performance Metrics</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">ROI (%)</label>
+                                <Input type="number" step="0.1" name="roi" value={formData.roi} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Drawdown (%)</label>
+                                <Input type="number" step="0.1" name="drawdown" value={formData.drawdown} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Win Rate (%)</label>
+                                <Input type="number" step="0.1" name="winRate" value={formData.winRate} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Risk Reward</label>
+                                <Input name="riskReward" value={formData.riskReward} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Subscribers (Investors)</label>
+                                <Input type="number" name="subscribers" value={formData.subscribers} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Max Subscribers (Limit)</label>
+                                <Input type="number" name="maxSubscribers" value={formData.maxSubscribers || ""} onChange={handleChange} placeholder="Optional" className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Rating (0-5)</label>
+                                <Input type="number" step="0.1" name="rating" value={formData.rating} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-slate-900 border-slate-800">
+                    <CardHeader>
+                        <CardTitle className="text-white">Pricing</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Monthly Price ($)</label>
+                            <Input type="number" step="0.01" name="price" value={formData.price} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">6-Month Price ($)</label>
+                            <Input type="number" step="0.01" name="priceSixMonth" value={formData.priceSixMonth} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-sm text-slate-400">Yearly Price ($)</label>
+                            <Input type="number" step="0.01" name="priceYearly" value={formData.priceYearly} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-slate-900 border-slate-800 md:col-span-2">
+                    <CardHeader className="flex flex-row items-center justify-between">
+                        <CardTitle className="text-white">Trading History</CardTitle>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setFormData(prev => ({
+                                ...prev,
+                                history: [...prev.history, { date: new Date().toISOString().slice(0, 7), profit: 0 }]
+                            }))}
+                            className="text-emerald-500 border-emerald-500 hover:bg-emerald-500/10"
+                        >
+                            <Plus className="h-4 w-4 mr-2" /> Add Month
+                        </Button>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {formData.history.map((entry, index) => (
+                                <div key={index} className="flex gap-2 items-end bg-slate-950 p-3 rounded border border-slate-800">
+                                    <div className="flex-1 space-y-1">
+                                        <label className="text-xs text-slate-500">Date (YYYY-MM)</label>
+                                        <Input
+                                            value={entry.date}
+                                            onChange={(e) => {
+                                                const newHistory = [...formData.history];
+                                                newHistory[index].date = e.target.value;
+                                                setFormData(prev => ({ ...prev, history: newHistory }));
+                                            }}
+                                            className="bg-slate-900 border-slate-700 h-8 text-sm"
+                                        />
+                                    </div>
+                                    <div className="flex-1 space-y-1">
+                                        <label className="text-xs text-slate-500">Profit (%)</label>
+                                        <Input
+                                            type="number"
+                                            step="0.01"
+                                            value={entry.profit}
+                                            onChange={(e) => {
+                                                const newHistory = [...formData.history];
+                                                newHistory[index].profit = parseFloat(e.target.value) || 0;
+                                                setFormData(prev => ({ ...prev, history: newHistory }));
+                                            }}
+                                            className={`bg-slate-900 border-slate-700 h-8 text-sm ${entry.profit >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                                        />
+                                    </div>
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() => {
+                                            const newHistory = formData.history.filter((_, i) => i !== index);
+                                            setFormData(prev => ({ ...prev, history: newHistory }));
+                                        }}
+                                        className="h-8 w-8 text-slate-500 hover:text-red-400 hover:bg-red-950/20"
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </form >
+    );
+}
