@@ -4,8 +4,8 @@ import { useState } from "react";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle, MoreVertical, Edit2 } from "lucide-react";
-import { updateUserProfile } from "../adminActions";
+import { CheckCircle2, XCircle, MoreVertical, Edit2, Trash2 } from "lucide-react";
+import { updateUserProfile, deleteUserAccount } from "../adminActions";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
@@ -33,6 +33,21 @@ export default function UsersTableBody({ initialUsers }: { initialUsers: any[] }
     const toggleBybitLink = async (userId: string, currentStatus: boolean) => {
         setUsers(users.map(u => u.id === userId ? { ...u, bybit_link_sent: !currentStatus } : u));
         await updateUserProfile(userId, { bybit_link_sent: !currentStatus });
+    };
+
+    const handleDeleteUser = async (userId: string) => {
+        if (!confirm("Are you sure you want to permanently delete this user? This cannot be undone.")) return;
+
+        // Optimistic UI update: Remove user from table immediately
+        setUsers(users.filter(u => u.id !== userId));
+
+        // Background delete
+        const result = await deleteUserAccount(userId);
+        if (!result.success) {
+            alert(`Failed to delete user: ${result.error}`);
+            // Revert changes if delete failed
+            setUsers(initialUsers);
+        }
     };
 
     return (
@@ -96,11 +111,16 @@ export default function UsersTableBody({ initialUsers }: { initialUsers: any[] }
 
                         {/* View Details Action */}
                         <TableCell className="text-right">
-                            <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white" onClick={() => {
-                                alert(`Extracted Info:\n\nBybit UID: ${user.bybit_uid || 'None'}\nMT Account: ${user.mt_account_number || 'None'}\nContact: ${user.contact_handle || 'None'}`);
-                            }}>
-                                View Info
-                            </Button>
+                            <div className="flex justify-end gap-2">
+                                <Button variant="outline" size="sm" className="border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white" onClick={() => {
+                                    alert(`Extracted Info:\n\nBybit UID: ${user.bybit_uid || 'None'}\nMT Account: ${user.mt_account_number || 'None'}\nContact: ${user.contact_handle || 'None'}`);
+                                }}>
+                                    View Info
+                                </Button>
+                                <Button variant="outline" size="icon" className="h-9 w-9 border-red-900/50 text-red-500 hover:bg-red-950/50 hover:text-red-400" onClick={() => handleDeleteUser(user.id)}>
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </div>
                         </TableCell>
                     </TableRow>
                 ))
