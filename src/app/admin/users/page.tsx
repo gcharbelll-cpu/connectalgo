@@ -50,9 +50,9 @@ export default async function AdminUsersPage() {
                             Change a user's status to Active to unlock their dashboard wall.
                         </CardDescription>
                     </CardHeader>
-                    <CardContent>
-                        <div className="rounded-md border border-slate-800">
-                            <Table>
+                    <CardContent className="p-0 sm:p-6">
+                        <div className="rounded-md border border-slate-800 overflow-x-auto">
+                            <Table className="min-w-[800px]">
                                 <TableHeader className="bg-slate-950">
                                     <TableRow className="border-slate-800 hover:bg-slate-950">
                                         <TableHead className="text-slate-400">User Email</TableHead>
