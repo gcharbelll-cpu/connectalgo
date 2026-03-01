@@ -25,7 +25,7 @@ export default async function PricingPage() {
                     </p>
                 </div>
 
-                <PricingGrid strategies={strategies} />
+                <PricingGrid />
 
                 {/* FAQ Section */}
                 <div className="mt-32 max-w-3xl mx-auto">

@@ -44,7 +44,7 @@ export function Hero() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="text-lg md:text-xl text-slate-400 max-w-2xl leading-relaxed"
                     >
-                        Automated copy trading on Bybit. No login required to view history.
+                        Automated copy trading on Bybit and exclusive EA access for Prop Firms.
                         Transparent records, verified results, and instant execution.
                     </motion.p>
 
@@ -120,7 +120,7 @@ export function Hero() {
                             </div>
                             <h3 className="text-white font-semibold mb-2">Instant Setup</h3>
                             <p className="text-slate-400 text-sm">
-                                Connect to our Copy Trading on Bybit. Funds remain in your custody.
+                                Connect to our Copy Trading on Bybit or deploy our EAs to your funded accounts.
                             </p>
                         </div>
                     </motion.div>

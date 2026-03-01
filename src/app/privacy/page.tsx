@@ -14,8 +14,8 @@ export default function Privacy() {
                             We respect your privacy. Connect Algo collects minimal personal information, primarily to facilitate communication and service delivery.
                         </p>
                         <ul className="list-disc pl-6 space-y-2 mt-2">
-                            <li>**Contact Information:** Name, email, or WhatsApp number when you contact us directly.</li>
-                            <li>**Usage Data:** Anonymous analytics data regarding website visits and interaction (via standard web analytics tools).</li>
+                            <li><strong className="text-white">Contact Information:</strong> Name, email, or WhatsApp number when you contact us directly.</li>
+                            <li><strong className="text-white">Usage Data:</strong> Anonymous analytics data regarding website visits and interaction (via standard web analytics tools).</li>
                         </ul>
                     </section>
 
@@ -34,7 +34,7 @@ export default function Privacy() {
                     <section>
                         <h2 className="text-xl font-semibold text-white mb-2">3. Financial Data</h2>
                         <p>
-                            **We do not collect or store your financial data, wallet private keys, or exchange login credentials.**
+                            <strong className="text-white">We do not collect or store your financial data, wallet private keys, or exchange login credentials.</strong>
                             All financial transactions and copy trading connections are handled securely by Bybit. We do not have access to your funds.
                         </p>
                     </section>

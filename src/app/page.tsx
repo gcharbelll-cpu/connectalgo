@@ -24,8 +24,8 @@ export default async function Home() {
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Available Strategies</h2>
             <p className="text-slate-400 max-w-2xl mx-auto">
-              Choose a strategy that matches your risk appetite and investment goals.
-              All strategies are monitored 24/7 by our algorithmic systems.
+              Choose a strategy that matches your risk appetite, or deploy our Prop Firm EAs.
+              All systems are monitored 24/7 by our algorithms.
             </p>
           </div>
 
@@ -45,7 +45,7 @@ export default async function Home() {
               Institutional Grade. <span className="text-emerald-400">Zero Friction.</span>
             </h2>
             <p className="text-xl text-slate-400">
-              We leverage Bybit's official Copy Trading infrastructure. Funds remain in your custody, no complex setup, just direct, secure replication.
+              Leverage Bybit Copy Trading or our exclusive EAs for Prop Firms. Institutional-grade execution, secure replication, and zero friction.
             </p>
           </div>
 
@@ -53,18 +53,18 @@ export default async function Home() {
             {[
               {
                 step: "01",
-                title: "Choose Your Strategy",
-                desc: "Select a single strategy or the complete 'Ultimate' portfolio based on your risk tolerance and goals."
+                title: "Choose Your Path",
+                desc: "Select a single copy trading strategy or our Prop Firm EAs based on your risk tolerance and goals."
               },
               {
                 step: "02",
-                title: "Connect via Bybit",
-                desc: "We provide access to our exclusive Master Trader account on Bybit. You simply click 'Copy' - funds remain in your custody."
+                title: "Connect or Deploy",
+                desc: "Copy our exclusive Master Trader account on Bybit, or deploy our EA directly to your funded challenge."
               },
               {
                 step: "03",
                 title: "Automated Growth",
-                desc: "Trades are replicated instantly and automatically in your own account. You maintain full control of your funds at all times."
+                desc: "Trades are executed instantly and automatically. You maintain full control at all times."
               }
             ].map((item, i) => (
               <div key={i} className="relative group">
@@ -95,7 +95,7 @@ export default async function Home() {
 
             <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Ready to Automate Your Wealth?</h2>
             <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Start copying our institutional strategies in minutes. No setup fees. Cancel anytime.
+              Start copying our institutional strategies or deploying our EAs in minutes. No setup fees. Cancel anytime.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">

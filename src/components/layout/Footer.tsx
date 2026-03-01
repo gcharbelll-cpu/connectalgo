@@ -4,9 +4,9 @@ import { BarChartHorizontal, Instagram } from "lucide-react";
 export function Footer() {
     return (
         <footer className="bg-slate-950 border-t border-slate-800 py-12">
-            <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-5 gap-8">
                 {/* Brand */}
-                <div className="space-y-4">
+                <div className="space-y-4 md:col-span-2 lg:pr-12">
                     <div className="flex items-center space-x-2">
                         <Link href="/" className="flex items-center space-x-2">
                             <div className="h-8 w-8 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg flex items-center justify-center">

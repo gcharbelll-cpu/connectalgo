@@ -18,15 +18,29 @@ export default async function AdminDashboard() {
         <div className="min-h-screen bg-slate-950 p-8">
             <div className="max-w-6xl mx-auto space-y-8">
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
-                        Admin Dashboard
-                    </h1>
-                    <form action={logout}>
-                        <Button variant="outline" className="border-red-900/50 text-red-400 hover:bg-red-950/50">
-                            <LogOut className="h-4 w-4 mr-2" />
-                            Logout
+                    <div>
+                        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
+                            Admin Command Center
+                        </h1>
+                        <p className="text-slate-400 mt-2">Manage trading strategies and user subscriptions.</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
+                            <Link href="/admin/users">
+                                Manage Subscriptions
+                            </Link>
                         </Button>
-                    </form>
+                        <form action={logout}>
+                            <Button variant="outline" className="border-red-900/50 text-red-400 hover:bg-red-950/50">
+                                <LogOut className="h-4 w-4 mr-2" />
+                                Logout
+                            </Button>
+                        </form>
+                    </div>
+                </div>
+
+                <div className="mb-4">
+                    <h2 className="text-xl font-semibold text-white">Active Strategies</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -33,7 +33,7 @@ export function Navbar() {
                         Pricing
                     </Link>
                     <Button variant="default" className="bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
-                        <Link href="/#contact">Start Copying</Link>
+                        <Link href="/sign-in">Sign In</Link>
                     </Button>
                 </div>
 
@@ -70,7 +70,7 @@ export function Navbar() {
                         Pricing
                     </Link>
                     <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-lg h-12 mt-4" asChild>
-                        <Link href="/#contact" onClick={() => setIsOpen(false)}>Start Copying</Link>
+                        <Link href="/sign-in" onClick={() => setIsOpen(false)}>Sign In</Link>
                     </Button>
                 </div>
             )}

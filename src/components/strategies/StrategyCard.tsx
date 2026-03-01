@@ -47,13 +47,13 @@ export function StrategyCard({ strategy, isFeatured = false }: StrategyCardProps
                     </div>
                     <Button size="lg" className="w-fit bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white border border-emerald-500/50" asChild>
                         <Link href={`/strategies/${strategy.id}`}>
-                            Invest in The Ultimate Portfolio <ArrowUpRight className="ml-2 h-5 w-5" />
+                            View Details <ArrowUpRight className="ml-2 h-5 w-5" />
                         </Link>
                     </Button>
                 </div>
 
                 <div className="flex-1 bg-slate-950/50 p-6 md:p-8 flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-800/50">
-                    <div className="grid grid-cols-2 gap-6 md:gap-8">
+                    <div className="grid grid-cols-3 gap-6 md:gap-8">
                         <div>
                             <span className="text-sm text-slate-500 uppercase tracking-wider">Total Return</span>
                             <div className="text-4xl font-bold text-emerald-400 mt-1">+{strategy.roi}%</div>
@@ -65,10 +65,6 @@ export function StrategyCard({ strategy, isFeatured = false }: StrategyCardProps
                         <div>
                             <span className="text-sm text-slate-500 uppercase tracking-wider">Max Drawdown</span>
                             <div className="text-2xl font-bold text-slate-200 mt-1">{strategy.drawdown}%</div>
-                        </div>
-                        <div>
-                            <span className="text-sm text-slate-500 uppercase tracking-wider">Investors</span>
-                            <div className="text-2xl font-bold text-slate-200 mt-1">{strategy.subscribers}</div>
                         </div>
                     </div>
                 </div>
@@ -125,21 +121,10 @@ export function StrategyCard({ strategy, isFeatured = false }: StrategyCardProps
                     </div>
                 </div>
             </CardContent>
-            <CardFooter className="pt-4 border-t border-slate-800/50 flex items-center justify-between">
-                <div className={cn("flex items-center gap-2 text-sm", strategy.maxSubscribers && strategy.subscribers >= strategy.maxSubscribers ? "text-red-400 font-medium" : "text-slate-400")}>
-                    <Users className="h-4 w-4" />
-                    <span>
-                        {strategy.maxSubscribers
-                            ? strategy.subscribers >= strategy.maxSubscribers
-                                ? `Sold Out ${strategy.subscribers}/${strategy.maxSubscribers}`
-                                : `${strategy.subscribers}/${strategy.maxSubscribers} Investors`
-                            : `${strategy.subscribers} Investors`
-                        }
-                    </span>
-                </div>
+            <CardFooter className="pt-4 border-t border-slate-800/50 flex items-center justify-end">
                 <Button className="bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white border border-emerald-500/50" asChild>
                     <Link href={`/strategies/${strategy.id}`}>
-                        Invest / Details <ArrowUpRight className="ml-2 h-4 w-4" />
+                        View Details <ArrowUpRight className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
             </CardFooter>
