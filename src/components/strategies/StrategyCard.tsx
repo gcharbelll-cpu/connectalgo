@@ -56,15 +56,15 @@ export function StrategyCard({ strategy, isFeatured = false }: StrategyCardProps
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
                         <div className="col-span-2 md:col-span-1">
                             <span className="text-sm text-slate-500 uppercase tracking-wider flex-shrink-0">Total Return</span>
-                            <div className="text-3xl md:text-4xl font-bold text-emerald-400 mt-1">+{strategy.roi}%</div>
+                            <div className="text-2xl min-[400px]:text-3xl md:text-4xl font-bold text-emerald-400 mt-1 whitespace-nowrap">+{strategy.roi}%</div>
                         </div>
                         <div>
                             <span className="text-sm text-slate-500 uppercase tracking-wider flex-shrink-0">Win Rate</span>
-                            <div className="text-3xl md:text-4xl font-bold text-white mt-1">{strategy.winRate}%</div>
+                            <div className="text-2xl min-[400px]:text-3xl md:text-4xl font-bold text-white mt-1 whitespace-nowrap">{strategy.winRate}%</div>
                         </div>
                         <div>
                             <span className="text-sm text-slate-500 uppercase tracking-wider flex-shrink-0">Max Drawdown</span>
-                            <div className="text-xl md:text-2xl font-bold text-slate-200 mt-1">{strategy.drawdown}%</div>
+                            <div className="text-xl min-[400px]:text-2xl md:text-2xl font-bold text-slate-200 mt-1 whitespace-nowrap">{strategy.drawdown}%</div>
                         </div>
                     </div>
                 </div>
