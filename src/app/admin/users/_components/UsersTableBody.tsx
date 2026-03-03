@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,12 @@ export default function UsersTableBody({ initialUsers }: { initialUsers: any[] }
     const [users, setUsers] = useState(initialUsers);
     const [editingUserId, setEditingUserId] = useState<string | null>(null);
     const [isSaving, setIsSaving] = useState(false);
+
+    // Sync server-side revalidation with client state
+    useEffect(() => {
+        setUsers(initialUsers);
+    }, [initialUsers]);
+
 
     // Simple handler to save changes instantly from the UI controls
     const toggleUserStatus = async (userId: string, currentStatus: string) => {
