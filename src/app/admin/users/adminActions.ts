@@ -11,14 +11,23 @@ export async function updateUserProfile(userId: string, updates: any) {
             process.env.SUPABASE_SERVICE_ROLE_KEY!
         );
 
-        const { error } = await supabaseAdmin
+        const { data, error } = await supabaseAdmin
             .from('profiles')
             .update(updates)
-            .eq('id', userId);
+            .eq('id', userId)
+            .select();
 
         if (error) {
             console.error("Error updating user:", error);
             return { success: false, error: error.message };
+        }
+
+        if (!data || data.length === 0) {
+            console.error("0 rows updated. RLS likely blocked the request.");
+            return {
+                success: false,
+                error: "Vercel is using the 'anon' public key instead of the 'service_role' secret key! Go to Vercel -> Settings -> Environment Variables and replace SUPABASE_SERVICE_ROLE_KEY with the secret key from Supabase."
+            };
         }
 
         revalidatePath('/admin/users');
