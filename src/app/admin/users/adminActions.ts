@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { revalidatePath } from 'next/cache';
 
 export async function updateUserProfile(userId: string, updates: any) {
     try {
@@ -20,6 +21,7 @@ export async function updateUserProfile(userId: string, updates: any) {
             return { success: false, error: error.message };
         }
 
+        revalidatePath('/admin/users');
         return { success: true };
     } catch (err: any) {
         console.error("Exception updating user:", err);
@@ -47,6 +49,7 @@ export async function deleteUserAccount(userId: string) {
         }
 
         console.log(`Successfully deleted user: ${userId}`);
+        revalidatePath('/admin/users');
         return { success: true };
     } catch (err: any) {
         console.error("Critical Exception deleting user:", err);
