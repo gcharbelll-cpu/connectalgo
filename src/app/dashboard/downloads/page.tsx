@@ -117,9 +117,14 @@ export default async function DownloadsDashboard() {
                     </CardContent>
                     <CardFooter className="pt-4 border-t border-slate-800/50">
                         <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20" asChild>
-                            <Link href="#" onClick={(e) => { e.preventDefault(); alert('Redirect to Support WhatsApp/Telegram for MT4 File'); }}>
-                                <FileText className="h-4 w-4 mr-2" /> Message Support for MT4 File
-                            </Link>
+                            <button
+                                onClick={(e) => { e.preventDefault(); alert('Redirect to Support WhatsApp/Telegram for MT4 File'); }}
+                                className="w-full mt-4"
+                            >
+                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                                    Download MT4
+                                </Button>
+                            </button>
                         </Button>
                     </CardFooter>
                 </Card>
@@ -146,9 +151,14 @@ export default async function DownloadsDashboard() {
                     </CardContent>
                     <CardFooter className="pt-4 border-t border-slate-800/50">
                         <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20" asChild>
-                            <Link href="#" onClick={(e) => { e.preventDefault(); alert('Redirect to Support WhatsApp/Telegram for MT5 File'); }}>
-                                <FileText className="h-4 w-4 mr-2" /> Message Support for MT5 File
-                            </Link>
+                            <button
+                                onClick={(e) => { e.preventDefault(); alert('Redirect to Support WhatsApp/Telegram for MT5 File'); }}
+                                className="w-full mt-4"
+                            >
+                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                                    Download MT5
+                                </Button>
+                            </button>
                         </Button>
                     </CardFooter>
                 </Card>

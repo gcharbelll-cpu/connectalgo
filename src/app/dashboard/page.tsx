@@ -153,9 +153,12 @@ export default async function DashboardOverview() {
                         </ul>
 
                         <Button variant="outline" className="w-full mt-2 border-slate-700 text-slate-300 hover:bg-slate-800" asChild>
-                            <Link href="#" onClick={(e) => { e.preventDefault(); alert('Redirect to Support WhatsApp/Telegram for Sub Management'); }}>
+                            <button
+                                onClick={(e) => { e.preventDefault(); alert('Redirect to Support WhatsApp/Telegram for Sub Management'); }}
+                                className="block w-full"
+                            >
                                 Manage Subscription
-                            </Link>
+                            </button>
                         </Button>
                     </CardContent>
                 </Card>
@@ -180,9 +183,12 @@ export default async function DashboardOverview() {
                         </div>
 
                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2" asChild>
-                            <Link href="#" onClick={(e) => { e.preventDefault(); alert('Redirect to Telegram/Support Email'); }}>
+                            <button
+                                onClick={(e) => { e.preventDefault(); alert('Redirect to Telegram/Support Email'); }}
+                                className="block w-full"
+                            >
                                 Message Support For Link
-                            </Link>
+                            </button>
                         </Button>
                     </CardContent>
                 </Card>
