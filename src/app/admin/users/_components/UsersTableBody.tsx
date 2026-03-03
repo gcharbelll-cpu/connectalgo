@@ -22,17 +22,29 @@ export default function UsersTableBody({ initialUsers }: { initialUsers: any[] }
         setUsers(users.map(u => u.id === userId ? { ...u, subscription_status: newStatus } : u));
 
         // Background save
-        await updateUserProfile(userId, { subscription_status: newStatus });
+        const result = await updateUserProfile(userId, { subscription_status: newStatus });
+        if (!result.success) {
+            alert(`Failed to update status: ${result.error}`);
+            setUsers(initialUsers); // Revert on failure
+        }
     };
 
     const changeUserTier = async (userId: string, newTier: string) => {
         setUsers(users.map(u => u.id === userId ? { ...u, plan_tier: newTier } : u));
-        await updateUserProfile(userId, { plan_tier: newTier });
+        const result = await updateUserProfile(userId, { plan_tier: newTier });
+        if (!result.success) {
+            alert(`Failed to update plan tier: ${result.error}`);
+            setUsers(initialUsers); // Revert on failure
+        }
     };
 
     const toggleBybitLink = async (userId: string, currentStatus: boolean) => {
         setUsers(users.map(u => u.id === userId ? { ...u, bybit_link_sent: !currentStatus } : u));
-        await updateUserProfile(userId, { bybit_link_sent: !currentStatus });
+        const result = await updateUserProfile(userId, { bybit_link_sent: !currentStatus });
+        if (!result.success) {
+            alert(`Failed to update Bybit status: ${result.error}`);
+            setUsers(initialUsers); // Revert on failure
+        }
     };
 
     const handleDeleteUser = async (userId: string) => {

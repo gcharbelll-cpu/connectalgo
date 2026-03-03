@@ -4,19 +4,27 @@ import { createClient } from "@/utils/supabase/server";
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 
 export async function updateUserProfile(userId: string, updates: any) {
-    const supabase = await createClient();
+    try {
+        const supabaseAdmin = createAdminClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.SUPABASE_SERVICE_ROLE_KEY!
+        );
 
-    const { error } = await supabase
-        .from('profiles')
-        .update(updates)
-        .eq('id', userId);
+        const { error } = await supabaseAdmin
+            .from('profiles')
+            .update(updates)
+            .eq('id', userId);
 
-    if (error) {
-        console.error("Error updating user:", error);
-        return { success: false, error: error.message };
+        if (error) {
+            console.error("Error updating user:", error);
+            return { success: false, error: error.message };
+        }
+
+        return { success: true };
+    } catch (err: any) {
+        console.error("Exception updating user:", err);
+        return { success: false, error: err.message || "Internal Server Error" };
     }
-
-    return { success: true };
 }
 
 export async function deleteUserAccount(userId: string) {
