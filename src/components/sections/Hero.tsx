@@ -66,6 +66,24 @@ export function Hero() {
                         </Button>
                     </motion.div>
 
+                    {/* Trusted Partners */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        className="flex flex-col items-center mt-12 mb-4"
+                    >
+                        <p className="text-sm text-slate-500 uppercase tracking-widest font-semibold mb-4 text-center">Official Partners</p>
+                        <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 opacity-60 hover:opacity-100 transition-opacity duration-300">
+                            <div className="text-2xl md:text-3xl font-black tracking-tighter text-white cursor-default flex items-center gap-2">
+                                <span className="text-amber-400">///</span> BYBIT
+                            </div>
+                            <div className="text-2xl md:text-3xl font-black tracking-tight text-white italic cursor-default">
+                                <span className="text-blue-500">F</span>TMO
+                            </div>
+                        </div>
+                    </motion.div>
+
                     {/* Fund Stats Bar */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
