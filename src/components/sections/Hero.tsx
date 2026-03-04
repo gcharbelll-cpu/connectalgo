@@ -74,12 +74,12 @@ export function Hero() {
                         transition={{ duration: 0.5, delay: 0.5 }}
                         className="flex flex-col items-center mt-12 mb-4 w-full max-w-3xl"
                     >
-                        <p className="text-sm text-slate-500 uppercase tracking-widest font-semibold mb-6 text-center">Official Partners</p>
-                        <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 opacity-60 hover:opacity-100 transition-opacity duration-300">
-                            <div className="relative w-32 md:w-40 h-12">
+                        <p className="text-sm text-slate-500 uppercase tracking-widest font-semibold mb-8 text-center mt-6">Official Partners</p>
+                        <div className="flex flex-wrap justify-center items-center gap-16 md:gap-32 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                            <div className="relative w-40 md:w-56 h-12 md:h-16">
                                 <Image src="/images/partners/bybit.png" alt="Bybit Official Partner" fill className="object-contain" />
                             </div>
-                            <div className="relative w-32 md:w-40 h-10 md:h-12">
+                            <div className="relative w-36 md:w-48 h-12 md:h-16">
                                 <Image src="/images/partners/ftmo.png" alt="FTMO Official Partner" fill className="object-contain" />
                             </div>
                         </div>
