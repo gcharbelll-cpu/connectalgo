@@ -41,7 +41,9 @@ export function PricingGrid() {
             "Institutional Risk Management",
             "Performance Tracking Dashboard",
             "Priority Support Channel"
-        ]
+        ],
+        seatsRemaining: 14,
+        totalSeats: 50
     };
 
     // Tier 2 Data
@@ -64,7 +66,9 @@ export function PricingGrid() {
             "Prop Firm Passing Support",
             "Exclusive High-Risk Presets",
             "1-on-1 Setup Strategy Call"
-        ]
+        ],
+        seatsRemaining: 5,
+        totalSeats: 25
     };
 
     return (
@@ -117,6 +121,23 @@ export function PricingGrid() {
                             )}
                         </div>
 
+                        {/* Limited Seats Indicator */}
+                        <div className="space-y-2 pt-2">
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-amber-400 font-medium flex items-center gap-1.5 animate-pulse">
+                                    <Zap className="h-4 w-4" fill="currentColor" />
+                                    Only {proTier.seatsRemaining} seats left
+                                </span>
+                                <span className="text-slate-500 font-mono text-xs">{proTier.totalSeats - proTier.seatsRemaining}/{proTier.totalSeats} Taken</span>
+                            </div>
+                            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"
+                                    style={{ width: `${((proTier.totalSeats - proTier.seatsRemaining) / proTier.totalSeats) * 100}%` }}
+                                />
+                            </div>
+                        </div>
+
                         <div className="pt-6 border-t border-slate-800">
                             <ul className="space-y-4 text-sm text-slate-300">
                                 {proTier.features.map((feature, i) => (
@@ -165,6 +186,23 @@ export function PricingGrid() {
                                     Save ${eliteTier.savings[period].toLocaleString()} compared to 3-month renewals
                                 </p>
                             )}
+                        </div>
+
+                        {/* Limited Seats Indicator */}
+                        <div className="space-y-2 pt-2">
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-amber-400 font-medium flex items-center gap-1.5 animate-pulse">
+                                    <Zap className="h-4 w-4" fill="currentColor" />
+                                    Only {eliteTier.seatsRemaining} seats left
+                                </span>
+                                <span className="text-slate-500 font-mono text-xs">{eliteTier.totalSeats - eliteTier.seatsRemaining}/{eliteTier.totalSeats} Taken</span>
+                            </div>
+                            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
+                                <div
+                                    className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"
+                                    style={{ width: `${((eliteTier.totalSeats - eliteTier.seatsRemaining) / eliteTier.totalSeats) * 100}%` }}
+                                />
+                            </div>
                         </div>
 
                         <div className="pt-6 border-t border-slate-800">
