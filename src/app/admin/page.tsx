@@ -1,10 +1,13 @@
 import { getStrategies } from "@/lib/data/strategies";
+import { getSiteSettings } from "@/lib/data/settings";
 import { checkAuth, logout } from "./actions";
+import { saveSiteSettings } from "./settingsActions";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Edit, LogOut } from "lucide-react";
+import { Plus, Edit, LogOut, Users } from "lucide-react";
+import { SettingsForm } from "./_components/SettingsForm";
 
 export default async function AdminDashboard() {
     const isAuthenticated = await checkAuth();
@@ -13,6 +16,7 @@ export default async function AdminDashboard() {
     }
 
     const strategies = await getStrategies();
+    const siteSettings = await getSiteSettings();
 
     return (
         <div className="min-h-screen bg-slate-950 p-8">
@@ -22,11 +26,12 @@ export default async function AdminDashboard() {
                         <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                             Admin Command Center
                         </h1>
-                        <p className="text-slate-400 mt-2">Manage trading strategies and user subscriptions.</p>
+                        <p className="text-slate-400 mt-2">Manage trading strategies, site settings, and user subscriptions.</p>
                     </div>
                     <div className="flex items-center gap-4">
                         <Button className="bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
                             <Link href="/admin/users">
+                                <Users className="h-4 w-4 mr-2" />
                                 Manage Subscriptions
                             </Link>
                         </Button>
@@ -37,6 +42,11 @@ export default async function AdminDashboard() {
                             </Button>
                         </form>
                     </div>
+                </div>
+
+                {/* --- SEATS NOTIFIER --- */}
+                <div className="mb-12">
+                    <SettingsForm initialSettings={siteSettings} onSave={saveSiteSettings} />
                 </div>
 
                 <div className="mb-4">

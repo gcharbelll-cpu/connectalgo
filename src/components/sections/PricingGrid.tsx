@@ -10,7 +10,14 @@ import { cn } from "@/lib/utils";
 
 type BillingPeriod = "threeMonth" | "sixMonth" | "yearly";
 
-export function PricingGrid() {
+interface PricingGridProps {
+    proTotal: number;
+    proRemaining: number;
+    eliteTotal: number;
+    eliteRemaining: number;
+}
+
+export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining }: PricingGridProps) {
     const [period, setPeriod] = useState<BillingPeriod>("threeMonth");
 
     const getPriceLabel = () => {
@@ -42,8 +49,8 @@ export function PricingGrid() {
             "Performance Tracking Dashboard",
             "Priority Support Channel"
         ],
-        seatsRemaining: 14,
-        totalSeats: 50
+        seatsRemaining: proRemaining,
+        totalSeats: proTotal
     };
 
     // Tier 2 Data

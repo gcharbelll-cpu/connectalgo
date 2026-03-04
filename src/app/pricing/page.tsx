@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { getStrategies } from "@/lib/data/strategies";
 import { PricingGrid } from "@/components/sections/PricingGrid";
+import { getSiteSettings } from "@/lib/data/settings";
 
 export const metadata = {
     title: "Pricing | Connect Algo",
@@ -9,7 +9,8 @@ export const metadata = {
 };
 
 export default async function PricingPage() {
-    const strategies = await getStrategies();
+
+    const settings = await getSiteSettings();
 
     return (
         <div className="min-h-screen bg-slate-950 text-slate-200">
@@ -25,7 +26,12 @@ export default async function PricingPage() {
                     </p>
                 </div>
 
-                <PricingGrid />
+                <PricingGrid
+                    proTotal={settings.pro_seats_total}
+                    proRemaining={settings.pro_seats_remaining}
+                    eliteTotal={settings.elite_seats_total}
+                    eliteRemaining={settings.elite_seats_remaining}
+                />
 
                 {/* FAQ Section */}
                 <div className="mt-32 max-w-3xl mx-auto">
