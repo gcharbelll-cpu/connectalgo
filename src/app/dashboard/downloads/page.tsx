@@ -15,8 +15,9 @@ export default async function DownloadsDashboard() {
         redirect("/sign-in");
     }
 
-    // Only Elite users can view this page
-    const isEliteUser = profile.plan_tier === 'elite';
+    // Only Elite users with an active, non-expired subscription can view this page
+    const isExpired = profile.subscription_end_date ? new Date(profile.subscription_end_date) < new Date() : false;
+    const isEliteUser = profile.plan_tier === 'elite' && profile.subscription_status === 'active' && !isExpired;
 
     if (!isEliteUser) {
         return (

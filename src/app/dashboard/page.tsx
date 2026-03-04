@@ -15,7 +15,8 @@ export default async function DashboardOverview() {
         redirect("/sign-in");
     }
 
-    const hasActiveSubscription = profile.subscription_status === 'active';
+    const isExpired = profile.subscription_end_date ? new Date(profile.subscription_end_date) < new Date() : false;
+    const hasActiveSubscription = profile.subscription_status === 'active' && !isExpired;
     const planTier = profile.plan_tier; // 'none', 'pro', 'elite'
 
     if (!hasActiveSubscription) {
@@ -25,9 +26,15 @@ export default async function DashboardOverview() {
                     <div className="inline-flex items-center justify-center p-3 bg-amber-500/10 rounded-full mb-2">
                         <AlertCircle className="h-8 w-8 text-amber-500" />
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight">Complete Your Setup</h1>
+                    <h1 className="text-3xl md:text-5xl font-bold text-white tracking-tight">
+                        {isExpired ? "Subscription Expired" : "Complete Your Setup"}
+                    </h1>
                     <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-                        To protect our strategies and prevent unauthorized sharing, our Master Copy Trading links are distributed <span className="text-emerald-400 font-semibold">privately</span> to verified members.
+                        {isExpired ? (
+                            "Your Connect Algo subscription has reached its end date. Please contact support to renew your plan and regain access to the Master Copy Trading links and EA downloads."
+                        ) : (
+                            <>To protect our strategies and prevent unauthorized sharing, our Master Copy Trading links are distributed <span className="text-emerald-400 font-semibold">privately</span> to verified members.</>
+                        )}
                     </p>
                 </div>
 
@@ -138,8 +145,12 @@ export default async function DashboardOverview() {
                                     <h3 className="text-2xl font-bold text-white capitalize">{planTier === 'none' ? 'No Plan' : `${planTier} Tier`}</h3>
                                 </div>
                                 <div className="text-right text-sm text-slate-400">
-                                    <p>Billing: Lifetime</p>
-                                    <p>Status: Active</p>
+                                    {profile.subscription_end_date ? (
+                                        <p>Expires: <span className="text-slate-200 font-medium">{new Date(profile.subscription_end_date).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}</span></p>
+                                    ) : (
+                                        <p>Billing: <span className="text-slate-200 font-medium">Lifetime</span></p>
+                                    )}
+                                    <p>Status: <span className="text-emerald-400">Active</span></p>
                                 </div>
                             </div>
                         </div>

@@ -59,6 +59,7 @@ export default async function AdminUsersPage() {
                                         <TableHead className="text-slate-400">Joined</TableHead>
                                         <TableHead className="text-slate-400">Status</TableHead>
                                         <TableHead className="text-slate-400">Plan Tier</TableHead>
+                                        <TableHead className="text-slate-400">Expires On</TableHead>
                                         <TableHead className="text-slate-400 text-center">Bybit Link Sent</TableHead>
                                         <TableHead className="text-right text-slate-400">Actions</TableHead>
                                     </TableRow>

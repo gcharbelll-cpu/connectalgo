@@ -44,6 +44,15 @@ export default function UsersTableBody({ initialUsers }: { initialUsers: any[] }
         }
     };
 
+    const changeSubscriptionEnd = async (userId: string, targetDate: string | null) => {
+        setUsers(users.map(u => u.id === userId ? { ...u, subscription_end_date: targetDate } : u));
+        const result = await updateUserProfile(userId, { subscription_end_date: targetDate });
+        if (!result.success) {
+            alert(`Failed to update expiration date: ${result.error}`);
+            setUsers(initialUsers);
+        }
+    };
+
     const toggleBybitLink = async (userId: string, currentStatus: boolean) => {
         setUsers(users.map(u => u.id === userId ? { ...u, bybit_link_sent: !currentStatus } : u));
         const result = await updateUserProfile(userId, { bybit_link_sent: !currentStatus });
@@ -114,6 +123,28 @@ export default function UsersTableBody({ initialUsers }: { initialUsers: any[] }
                                     <SelectItem value="elite">Elite</SelectItem>
                                 </SelectContent>
                             </Select>
+                        </TableCell>
+
+                        {/* Expiration Date */}
+                        <TableCell>
+                            <div className="flex flex-col gap-1">
+                                <input
+                                    type="date"
+                                    className="w-[125px] h-8 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded px-2 focus:ring-1 focus:ring-emerald-500 outline-none"
+                                    value={user.subscription_end_date ? new Date(user.subscription_end_date).toISOString().split('T')[0] : ''}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        changeSubscriptionEnd(user.id, val ? new Date(val).toISOString() : null);
+                                    }}
+                                />
+                                {user.subscription_end_date ? (
+                                    <span className={`text-[10px] ${new Date(user.subscription_end_date) < new Date() ? 'text-red-400' : 'text-emerald-400'}`}>
+                                        {new Date(user.subscription_end_date) < new Date() ? 'Expired' : 'Active Fixed-Term'}
+                                    </span>
+                                ) : (
+                                    <span className="text-[10px] text-slate-500">Lifetime</span>
+                                )}
+                            </div>
                         </TableCell>
 
                         {/* Bybit Link Toggle */}
