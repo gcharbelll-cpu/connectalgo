@@ -75,13 +75,11 @@ export function Hero() {
                         className="flex flex-col items-center mt-12 mb-4 w-full max-w-3xl"
                     >
                         <p className="text-sm text-slate-500 uppercase tracking-widest font-semibold mb-8 text-center mt-6">Official Partners</p>
-                        <div className="flex flex-wrap justify-center items-center gap-16 md:gap-32 opacity-80 hover:opacity-100 transition-opacity duration-300">
-                            <div className="relative w-40 md:w-56 h-12 md:h-16">
-                                <Image src="/images/partners/bybit.png" alt="Bybit Official Partner" fill className="object-contain" />
-                            </div>
-                            <div className="relative w-36 md:w-48 h-12 md:h-16">
-                                <Image src="/images/partners/ftmo.png" alt="FTMO Official Partner" fill className="object-contain" />
-                            </div>
+                        <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-80 hover:opacity-100 transition-opacity duration-300">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/images/partners/bybit.png" alt="Bybit Official Partner" className="h-10 md:h-14 w-auto object-contain drop-shadow-lg" />
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src="/images/partners/ftmo.png" alt="FTMO Official Partner" className="h-9 md:h-12 w-auto object-contain drop-shadow-lg" />
                         </div>
                     </motion.div>
 
