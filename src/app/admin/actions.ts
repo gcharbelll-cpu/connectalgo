@@ -56,3 +56,31 @@ export async function updateStrategy(strategy: Strategy) {
 
     return { success: true };
 }
+
+export async function addStrategy(strategy: Strategy) {
+    const isAuthenticated = await checkAuth();
+    if (!isAuthenticated) {
+        throw new Error("Unauthorized");
+    }
+
+    const strategies = await getStrategies();
+
+    // Ensure ID is unique, generate one if not provided
+    if (!strategy.id) {
+        strategy.id = strategy.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    }
+
+    // Check if ID already exists
+    if (strategies.some(s => s.id === strategy.id)) {
+        // Append a random string to make it unique
+        strategy.id = `${strategy.id}-${Math.random().toString(36).substring(2, 6)}`;
+    }
+
+    // Add exactly at the end
+    strategies.push(strategy);
+
+    // Save to file
+    await saveStrategies(strategies);
+
+    return { success: true, id: strategy.id };
+}

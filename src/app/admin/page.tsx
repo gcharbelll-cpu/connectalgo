@@ -77,13 +77,15 @@ export default async function AdminDashboard() {
                         </Card>
                     ))}
 
-                    {/* Add New Strategy Placeholder */}
-                    <Card className="bg-slate-900/50 border-slate-800 border-dashed flex items-center justify-center min-h-[200px] cursor-pointer hover:bg-slate-900 transition-colors">
-                        <div className="text-center text-slate-500">
-                            <Plus className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                            <span>Add New Strategy (Coming Soon)</span>
-                        </div>
-                    </Card>
+                    {/* Add New Strategy Button */}
+                    <Link href="/admin/add">
+                        <Card className="bg-slate-900/50 border-emerald-500/30 border-dashed flex items-center justify-center min-h-[200px] cursor-pointer hover:bg-emerald-950/20 hover:border-emerald-500 transition-colors group">
+                            <div className="text-center text-emerald-500/70 group-hover:text-emerald-400">
+                                <Plus className="h-8 w-8 mx-auto mb-2" />
+                                <span className="font-medium">Create New Strategy</span>
+                            </div>
+                        </Card>
+                    </Link>
                 </div>
             </div>
         </div>

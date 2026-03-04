@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { updateStrategy } from "../actions";
+import { updateStrategy, addStrategy } from "../actions";
 import { useRouter } from "next/navigation";
 import { Save, ArrowLeft, Loader2, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -15,9 +15,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface StrategyFormProps {
     strategy: Strategy;
+    isNew?: boolean;
 }
 
-export function StrategyForm({ strategy }: StrategyFormProps) {
+export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
     const [formData, setFormData] = useState<Strategy>(strategy);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -36,11 +37,17 @@ export function StrategyForm({ strategy }: StrategyFormProps) {
         e.preventDefault();
         setLoading(true);
         try {
-            await updateStrategy(formData);
-            router.refresh(); // Refresh server data
-            alert("Strategy updated successfully!");
+            if (isNew) {
+                await addStrategy(formData);
+                alert("Strategy created successfully!");
+                router.push("/admin");
+            } else {
+                await updateStrategy(formData);
+                alert("Strategy updated successfully!");
+                router.refresh();
+            }
         } catch (error) {
-            alert("Failed to update strategy");
+            alert(isNew ? "Failed to create strategy" : "Failed to update strategy");
             console.error(error);
         } finally {
             setLoading(false);
@@ -66,8 +73,14 @@ export function StrategyForm({ strategy }: StrategyFormProps) {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="space-y-2">
-                            <label className="text-sm text-slate-400">Strategy ID (Read-only)</label>
-                            <Input value={formData.id} disabled className="bg-slate-900 border-slate-800 text-slate-500" />
+                            <label className="text-sm text-slate-400">Strategy ID {isNew ? "(Auto-generates if blank)" : "(Read-only)"}</label>
+                            <Input
+                                name="id"
+                                value={formData.id}
+                                onChange={handleChange}
+                                disabled={!isNew}
+                                className={`bg-slate-900 border-slate-800 ${!isNew ? "text-slate-500" : "text-white"}`}
+                            />
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm text-slate-400">Name</label>
