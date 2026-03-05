@@ -44,7 +44,7 @@ export function SettingsForm({ initialSettings, onSave }: SettingsFormProps) {
         const { name, value } = e.target;
         setSettings(prev => ({
             ...prev,
-            [name]: parseInt(value) || 0
+            [name]: name.startsWith('hero_') ? value : (parseInt(value) || 0)
         }));
     };
 
@@ -109,6 +109,46 @@ export function SettingsForm({ initialSettings, onSave }: SettingsFormProps) {
                                     name="elite_seats_remaining"
                                     type="number"
                                     value={settings.elite_seats_remaining}
+                                    onChange={handleChange}
+                                    className="bg-slate-900 border-slate-700 text-white"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Hero Section Settings */}
+                    <div className="p-4 rounded-lg bg-slate-950/50 border border-slate-800 space-y-4">
+                        <h3 className="font-medium text-cyan-400">Hero Section Stats</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="hero_total_return" className="text-slate-300">Total Return</Label>
+                                <Input
+                                    id="hero_total_return"
+                                    name="hero_total_return"
+                                    type="text"
+                                    value={settings.hero_total_return}
+                                    onChange={handleChange}
+                                    className="bg-slate-900 border-slate-700 text-white"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="hero_active_investors" className="text-slate-300">Active Investors</Label>
+                                <Input
+                                    id="hero_active_investors"
+                                    name="hero_active_investors"
+                                    type="text"
+                                    value={settings.hero_active_investors}
+                                    onChange={handleChange}
+                                    className="bg-slate-900 border-slate-700 text-white"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="hero_strategies" className="text-slate-300">Strategies</Label>
+                                <Input
+                                    id="hero_strategies"
+                                    name="hero_strategies"
+                                    type="text"
+                                    value={settings.hero_strategies}
                                     onChange={handleChange}
                                     className="bg-slate-900 border-slate-700 text-white"
                                 />

@@ -9,6 +9,9 @@ export type SiteSettings = {
     pro_seats_remaining: number;
     elite_seats_total: number;
     elite_seats_remaining: number;
+    hero_total_return: string;
+    hero_active_investors: string;
+    hero_strategies: string;
     updated_at: string;
 };
 
@@ -20,6 +23,9 @@ const defaultSettings: SiteSettings = {
     pro_seats_remaining: 14,
     elite_seats_total: 25,
     elite_seats_remaining: 5,
+    hero_total_return: "+2,450%",
+    hero_active_investors: "1,500+",
+    hero_strategies: "4",
     updated_at: new Date().toISOString()
 };
 

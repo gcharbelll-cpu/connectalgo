@@ -5,8 +5,18 @@ import { ArrowRight, BarChart2, Shield, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { SiteSettings } from "@/lib/data/settings";
 
-export function Hero() {
+interface HeroProps {
+    settings?: SiteSettings;
+}
+
+export function Hero({ settings }: HeroProps) {
+    // Fallbacks just in case props don't load instantly
+    const totalReturn = settings?.hero_total_return || "+2,450%";
+    const activeInvestors = settings?.hero_active_investors || "1,500+";
+    const strategiesCount = settings?.hero_strategies || "4";
+
     return (
         <section className="relative w-full overflow-hidden bg-slate-950 py-24 md:py-32 lg:py-40">
             {/* Background Gradients */}
@@ -88,23 +98,19 @@ export function Hero() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 mt-8 backdrop-blur-md"
+                        className="grid grid-cols-3 gap-4 md:gap-8 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 mt-8 backdrop-blur-md"
                     >
                         <div className="flex flex-col">
-                            <span className="text-slate-400 text-xs uppercase tracking-wider">Total Return</span>
-                            <span className="text-2xl md:text-3xl font-bold text-emerald-400">+2,450%</span>
+                            <span className="text-slate-400 text-xs md:text-sm uppercase tracking-wider font-medium">Total Return</span>
+                            <span className="text-2xl md:text-4xl font-bold text-emerald-400 mt-1">{totalReturn}</span>
+                        </div>
+                        <div className="flex flex-col border-x border-slate-800/50 px-4 md:px-8">
+                            <span className="text-slate-400 text-xs md:text-sm uppercase tracking-wider font-medium">Active Investors</span>
+                            <span className="text-2xl md:text-4xl font-bold text-white mt-1">{activeInvestors}</span>
                         </div>
                         <div className="flex flex-col">
-                            <span className="text-slate-400 text-xs uppercase tracking-wider">Active Investors</span>
-                            <span className="text-2xl md:text-3xl font-bold text-white">1,500+</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-slate-400 text-xs uppercase tracking-wider">Win Rate</span>
-                            <span className="text-2xl md:text-3xl font-bold text-emerald-400">86%</span>
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-slate-400 text-xs uppercase tracking-wider">Strategies</span>
-                            <span className="text-2xl md:text-3xl font-bold text-white">4</span>
+                            <span className="text-slate-400 text-xs md:text-sm uppercase tracking-wider font-medium">Strategies</span>
+                            <span className="text-2xl md:text-4xl font-bold text-white mt-1">{strategiesCount}</span>
                         </div>
                     </motion.div>
 

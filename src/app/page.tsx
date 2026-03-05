@@ -8,15 +8,18 @@ import { CheckCircle2 } from "lucide-react";
 import { Ticker } from "@/components/ui/Ticker";
 import { FAQ } from "@/components/sections/FAQ";
 import { Testimonials } from "@/components/sections/Testimonials";
+import { getSiteSettings } from "@/lib/data/settings";
 
 export default async function Home() {
   const strategies = await getStrategies();
+  const siteSettings = await getSiteSettings();
+
   return (
     <main className="min-h-screen bg-slate-950 text-slate-200">
       <Ticker />
       <Navbar />
 
-      <Hero />
+      <Hero settings={siteSettings} />
 
       {/* Strategies Section */}
       <section id="strategies" className="py-24 relative">
