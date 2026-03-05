@@ -9,10 +9,12 @@ import { Ticker } from "@/components/ui/Ticker";
 import { FAQ } from "@/components/sections/FAQ";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { getSiteSettings } from "@/lib/data/settings";
+import { getTestimonials } from "@/lib/data/testimonials";
 
 export default async function Home() {
   const strategies = await getStrategies();
   const siteSettings = await getSiteSettings();
+  const testimonials = await getTestimonials();
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-200">
@@ -37,7 +39,7 @@ export default async function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <Testimonials />
+      <Testimonials reviews={testimonials} />
 
       {/* How It Works Section */}
       <section id="how-it-works" className="py-24 bg-slate-950 relative overflow-hidden">

@@ -2,28 +2,13 @@
 
 import { Star, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Testimonial } from "@/lib/data/testimonials";
 
-export function Testimonials() {
-    const reviews = [
-        {
-            name: "Michael R.",
-            role: "Software Engineer",
-            content: "I've been looking for a passive income stream that doesn't require my constant attention. The Trend Intraday strategy has been incredible—consistent gains without me lifting a finger.",
-            rating: 5
-        },
-        {
-            name: "Sarah L.",
-            role: "Entrepreneur",
-            content: "The transparency is what sold me. Being able to see every trade executed in real-time on Bybit gives me huge peace of mind. The returns speak for themselves.",
-            rating: 5
-        },
-        {
-            name: "David K.",
-            role: "Crypto Investor",
-            content: "I started with a small amount on the Range Intraday strategy just to test it out. After seeing the risk management in action during the last dip, I moved my entire portfolio over.",
-            rating: 5
-        }
-    ];
+interface TestimonialsProps {
+    reviews: Testimonial[];
+}
+
+export function Testimonials({ reviews }: TestimonialsProps) {
 
     return (
         <section className="py-24 bg-slate-950 relative overflow-hidden">

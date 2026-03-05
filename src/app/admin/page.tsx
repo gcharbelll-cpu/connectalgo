@@ -29,12 +29,20 @@ export default async function AdminDashboard() {
                         <p className="text-slate-400 mt-2">Manage trading strategies, site settings, and user subscriptions.</p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Button className="bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
-                            <Link href="/admin/users">
-                                <Users className="h-4 w-4 mr-2" />
-                                Manage Subscriptions
-                            </Link>
-                        </Button>
+                        <div className="flex gap-2">
+                            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white" asChild>
+                                <Link href="/admin/users">
+                                    <Users className="h-4 w-4 mr-2" />
+                                    Subscribers
+                                </Link>
+                            </Button>
+                            <Button className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                                <Link href="/admin/testimonials">
+                                    <Users className="h-4 w-4 mr-2" />
+                                    Reviews
+                                </Link>
+                            </Button>
+                        </div>
                         <form action={logout}>
                             <Button variant="outline" className="border-red-900/50 text-red-400 hover:bg-red-950/50">
                                 <LogOut className="h-4 w-4 mr-2" />
