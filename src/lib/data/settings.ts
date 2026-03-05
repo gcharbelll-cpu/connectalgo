@@ -17,6 +17,18 @@ export type SiteSettings = {
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
+    // If running locally without .env keys, return the mock data immediately so it doesn't crash throwing "Failed to fetch" on a dummy URL
+    if (supabaseUrl === "https://placeholder-url.supabase.co") {
+        return {
+            id: 'fallback',
+            pro_seats_total: 50,
+            pro_seats_remaining: 14,
+            elite_seats_total: 25,
+            elite_seats_remaining: 5,
+            updated_at: new Date().toISOString()
+        };
+    }
+
     const { data, error } = await supabase
         .from('site_settings')
         .select('*')
