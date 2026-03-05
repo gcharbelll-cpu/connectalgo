@@ -1,0 +1,27 @@
+[
+    {
+        "id": "1",
+        "question": "How does the copy trading process work?",
+        "answer": "We utilize Bybit's official Copy Trading infrastructure. Once you connect, our Master Account trades are replicated instantly in your own account. You maintain full custody of your funds and can disconnect at any time."
+    },
+    {
+        "id": "2",
+        "question": "Is my capital safe?",
+        "answer": "Yes. Your funds always remain in your own personal Bybit exchange account. We never have permission to withdraw or move your assets. The system only provides trade execution signals."
+    },
+    {
+        "id": "3",
+        "question": "What is the recommended minimum investment?",
+        "answer": "To ensure proper position sizing and risk management, we recommend a minimum capital of $3,000 for individual strategies. For 'The Ultimate' portfolio, a minimum of $5,000 is advised to effectively diversify across all assets."
+    },
+    {
+        "id": "4",
+        "question": "Can I withdraw my profits at any time?",
+        "answer": "Absolutely. There is no lock-up period. You have 100% control over your funds and can withdraw your profits or your entire capital whenever you choose via Bybit."
+    },
+    {
+        "id": "5",
+        "question": "Do I need to keep my computer on?",
+        "answer": "No. All trading operations occur in the cloud on Bybit's institutional servers. You do not need to install any software or keep your device running."
+    }
+]

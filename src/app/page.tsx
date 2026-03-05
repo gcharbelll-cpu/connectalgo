@@ -10,11 +10,13 @@ import { FAQ } from "@/components/sections/FAQ";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { getSiteSettings } from "@/lib/data/settings";
 import { getTestimonials } from "@/lib/data/testimonials";
+import { getFaqs } from "@/lib/data/faq";
 
 export default async function Home() {
   const strategies = await getStrategies();
   const siteSettings = await getSiteSettings();
   const testimonials = await getTestimonials();
+  const faqs = await getFaqs();
 
   return (
     <main className="min-h-screen bg-slate-950 text-slate-200">
@@ -89,7 +91,7 @@ export default async function Home() {
       </section>
 
       {/* FAQ Section */}
-      <FAQ />
+      <FAQ faqs={faqs} />
 
       {/* Pricing / Contact CTA */}
       <section id="contact" className="py-24 scroll-mt-16">
