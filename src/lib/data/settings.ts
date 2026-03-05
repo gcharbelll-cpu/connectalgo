@@ -1,11 +1,7 @@
 "use server";
 
-import { createClient } from "@supabase/supabase-js";
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co";
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-key";
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+import fs from "fs";
+import path from "path";
 
 export type SiteSettings = {
     id: string;
@@ -16,57 +12,46 @@ export type SiteSettings = {
     updated_at: string;
 };
 
+const DATA_FILE_PATH = path.join(process.cwd(), "src/lib/data/settings.json");
+
+const defaultSettings: SiteSettings = {
+    id: 'site_settings',
+    pro_seats_total: 50,
+    pro_seats_remaining: 14,
+    elite_seats_total: 25,
+    elite_seats_remaining: 5,
+    updated_at: new Date().toISOString()
+};
+
 export async function getSiteSettings(): Promise<SiteSettings> {
-    // If running locally without .env keys, return the mock data immediately so it doesn't crash throwing "Failed to fetch" on a dummy URL
-    if (supabaseUrl === "https://placeholder-url.supabase.co") {
-        return {
-            id: 'fallback',
-            pro_seats_total: 50,
-            pro_seats_remaining: 14,
-            elite_seats_total: 25,
-            elite_seats_remaining: 5,
-            updated_at: new Date().toISOString()
-        };
+    try {
+        if (!fs.existsSync(DATA_FILE_PATH)) {
+            // If file doesn't exist, return default settings
+            return defaultSettings;
+        }
+
+        const fileContent = fs.readFileSync(DATA_FILE_PATH, "utf-8");
+        return JSON.parse(fileContent);
+    } catch (error) {
+        console.error("Error reading site settings:", error);
+        return defaultSettings;
     }
-
-    const { data, error } = await supabase
-        .from('site_settings')
-        .select('*')
-        .limit(1)
-        .single();
-
-    if (error) {
-        // Return default fallback if table doesn't exist yet or is empty
-        // Muting console.error so Next.js doesn't show a red overlay during local development without a database
-        return {
-            id: 'fallback',
-            pro_seats_total: 50,
-            pro_seats_remaining: 14,
-            elite_seats_total: 25,
-            elite_seats_remaining: 5,
-            updated_at: new Date().toISOString()
-        };
-    }
-
-    return data;
 }
 
 export async function updateSiteSettings(settings: Partial<SiteSettings>) {
-    const { id, ...updateData } = settings;
+    try {
+        const currentSettings = await getSiteSettings();
 
-    // We update the first row (there should only be one)
-    const { error } = await supabase
-        .from('site_settings')
-        .update({
-            ...updateData,
+        const newSettings = {
+            ...currentSettings,
+            ...settings,
             updated_at: new Date().toISOString()
-        })
-        .neq('id', '00000000-0000-0000-0000-000000000000'); // Dummy condition to update all (or just limit it)
+        };
 
-    if (error) {
+        fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(newSettings, null, 2), "utf-8");
+        return { success: true };
+    } catch (error) {
         console.error("Error updating site settings:", error);
-        throw new Error(error.message);
+        throw new Error("Failed to save site settings to file");
     }
-
-    return { success: true };
 }
