@@ -84,3 +84,26 @@ export async function addStrategy(strategy: Strategy) {
 
     return { success: true, id: strategy.id };
 }
+
+export async function deleteStrategy(id: string) {
+    const isAuthenticated = await checkAuth();
+    if (!isAuthenticated) {
+        throw new Error("Unauthorized");
+    }
+
+    let strategies = await getStrategies();
+
+    // Check if it exists before trying to delete
+    const exists = strategies.some(s => s.id === id);
+    if (!exists) {
+        return { success: false, error: "Strategy not found" };
+    }
+
+    // Filter out the deleted one
+    strategies = strategies.filter(s => s.id !== id);
+
+    // Save to file
+    await saveStrategies(strategies);
+
+    return { success: true };
+}

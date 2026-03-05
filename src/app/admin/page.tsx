@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Edit, LogOut, Users } from "lucide-react";
 import { SettingsForm } from "./_components/SettingsForm";
+import { DeleteStrategyButton } from "./_components/DeleteStrategyButton";
 
 export default async function AdminDashboard() {
     const isAuthenticated = await checkAuth();
@@ -68,11 +69,14 @@ export default async function AdminDashboard() {
                                 <CardTitle className="text-sm font-medium text-slate-200">
                                     {strategy.name}
                                 </CardTitle>
-                                <Link href={`/admin/edit/${strategy.id}`}>
-                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white">
-                                        <Edit className="h-4 w-4" />
-                                    </Button>
-                                </Link>
+                                <div className="flex gap-1">
+                                    <Link href={`/admin/edit/${strategy.id}`}>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white" title="Edit Strategy">
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                    <DeleteStrategyButton strategyId={strategy.id} strategyName={strategy.name} />
+                                </div>
                             </CardHeader>
                             <CardContent>
                                 <div className="text-2xl font-bold text-white">+{strategy.roi}%</div>
