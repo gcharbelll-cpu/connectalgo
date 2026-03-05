@@ -41,3 +41,17 @@ export async function signup(formData: FormData) {
     revalidatePath('/', 'layout')
     redirect('/sign-in?message=Check your email to verify your account.')
 }
+
+export async function signOut() {
+    const supabase = await createClient()
+
+    // Check if a session exists before signing out
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session) {
+        await supabase.auth.signOut()
+    }
+
+    // Clear the router cache and redirect to the homepage
+    revalidatePath('/', 'layout')
+    redirect('/')
+}

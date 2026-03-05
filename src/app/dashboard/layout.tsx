@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutDashboard, LineChart, Download, Settings, LogOut, Shield, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { signOut } from "@/app/actions/auth";
 
 const navItems = [
     { name: "Overview", href: "/dashboard", icon: LayoutDashboard },
@@ -75,10 +76,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                     </nav>
 
                     <div className="p-4 border-t border-slate-800">
-                        <Button variant="ghost" className="w-full justify-start text-slate-400 hover:text-red-400 hover:bg-red-500/10">
-                            <LogOut className="h-5 w-5 mr-3" />
-                            Sign Out
-                        </Button>
+                        <form action={signOut}>
+                            <Button type="submit" variant="ghost" className="w-full justify-start text-slate-400 hover:text-red-400 hover:bg-red-500/10">
+                                <LogOut className="h-5 w-5 mr-3" />
+                                Sign Out
+                            </Button>
+                        </form>
                     </div>
                 </div>
             </aside>
