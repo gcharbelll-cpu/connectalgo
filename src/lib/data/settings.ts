@@ -36,8 +36,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         .single();
 
     if (error) {
-        console.error("Error fetching site settings:", error);
         // Return default fallback if table doesn't exist yet or is empty
+        // Muting console.error so Next.js doesn't show a red overlay during local development without a database
         return {
             id: 'fallback',
             pro_seats_total: 50,
