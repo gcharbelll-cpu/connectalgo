@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { updateStrategy, addStrategy } from "../actions";
+import { updateStrategy, addStrategy, uploadStrategyRecord } from "../actions";
 import { useRouter } from "next/navigation";
 import { Save, ArrowLeft, Loader2, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -21,7 +21,32 @@ interface StrategyFormProps {
 export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
     const [formData, setFormData] = useState<Strategy>(strategy);
     const [loading, setLoading] = useState(false);
+    const [uploadingRecord, setUploadingRecord] = useState(false);
     const router = useRouter();
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploadingRecord(true);
+        try {
+            const uploadData = new FormData();
+            uploadData.append("file", file);
+
+            const result = await uploadStrategyRecord(uploadData);
+            if (result.success && result.url) {
+                setFormData(prev => ({ ...prev, provenRecordUrl: result.url }));
+                alert("File uploaded successfully. Don't forget to push 'Save Changes'!");
+            } else {
+                alert(result.error || "Failed to upload file.");
+            }
+        } catch (error) {
+            console.error("Upload error:", error);
+            alert("An error occurred during upload.");
+        } finally {
+            setUploadingRecord(false);
+        }
+    };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -121,14 +146,39 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm text-slate-400">Proven Record URL (TradingView)</label>
-                            <Input
-                                name="provenRecordUrl"
-                                value={formData.provenRecordUrl || ""}
-                                onChange={handleChange}
-                                placeholder="https://www.tradingview.com/..."
-                                className="bg-slate-950 border-slate-800"
-                            />
+                            <label className="text-sm text-slate-400">Verified Record File / URL</label>
+                            <div className="flex gap-2">
+                                <Input
+                                    name="provenRecordUrl"
+                                    value={formData.provenRecordUrl || ""}
+                                    onChange={handleChange}
+                                    placeholder="https://www.tradingview.com/... or upload a file"
+                                    className="bg-slate-950 border-slate-800 flex-1"
+                                />
+                                <div>
+                                    <input
+                                        type="file"
+                                        id={`record-upload-${isNew ? 'new' : strategy.id}`}
+                                        className="hidden"
+                                        onChange={handleFileUpload}
+                                        accept=".pdf,image/*,.csv"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="border-slate-700 bg-slate-800 text-slate-300 hover:text-white"
+                                        onClick={() => document.getElementById(`record-upload-${isNew ? 'new' : strategy.id}`)?.click()}
+                                        disabled={uploadingRecord}
+                                    >
+                                        {uploadingRecord ? <Loader2 className="h-4 w-4 animate-spin" /> : "Upload File"}
+                                    </Button>
+                                </div>
+                            </div>
+                            {formData.provenRecordUrl && formData.provenRecordUrl.includes('supabase.co') && (
+                                <p className="text-xs text-emerald-400 mt-1">
+                                    Current file: <a href={formData.provenRecordUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-300">View Active File</a>
+                                </p>
+                            )}
                         </div>
                     </CardContent>
                 </Card>

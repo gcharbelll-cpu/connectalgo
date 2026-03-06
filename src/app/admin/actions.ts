@@ -119,3 +119,56 @@ export async function deleteStrategy(id: string) {
 
     return { success: true };
 }
+
+export async function uploadStrategyRecord(formData: FormData) {
+    const isAuthenticated = await checkAuth();
+    if (!isAuthenticated) {
+        throw new Error("Unauthorized");
+    }
+
+    const file = formData.get("file") as File;
+    if (!file) {
+        return { success: false, error: "No file provided" };
+    }
+
+    try {
+        const { createClient } = await import("@supabase/supabase-js");
+
+        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+            throw new Error("Missing Supabase environment variables");
+        }
+
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL,
+            process.env.SUPABASE_SERVICE_ROLE_KEY,
+            { auth: { persistSession: false } }
+        );
+
+        // Create a unique filename
+        const fileExt = file.name.split('.').pop() || 'bin';
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+
+        // Upload the file
+        const { error: uploadError } = await supabase.storage
+            .from('strategy_records')
+            .upload(fileName, file, {
+                contentType: file.type,
+                upsert: false
+            });
+
+        if (uploadError) {
+            console.error("Upload error:", uploadError);
+            return { success: false, error: "Failed to upload file to storage" };
+        }
+
+        // Get public URL
+        const { data: urlData } = supabase.storage
+            .from('strategy_records')
+            .getPublicUrl(fileName);
+
+        return { success: true, url: urlData.publicUrl };
+    } catch (error) {
+        console.error("Upload handler error:", error);
+        return { success: false, error: "An unexpected error occurred during upload" };
+    }
+}
