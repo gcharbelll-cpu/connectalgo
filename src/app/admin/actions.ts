@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { getStrategies, saveStrategies, Strategy } from "@/lib/data/strategies";
 
 import { getAdminsForAuth } from "@/lib/data/admins";
@@ -63,8 +64,12 @@ export async function updateStrategy(strategy: Strategy) {
     // Update the strategy
     strategies[index] = strategy;
 
-    // Save to file
+    // Save to Supabase
     await saveStrategies(strategies);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/admin");
+    revalidatePath("/strategies");
 
     return { success: true };
 }
@@ -91,8 +96,12 @@ export async function addStrategy(strategy: Strategy) {
     // Add exactly at the end
     strategies.push(strategy);
 
-    // Save to file
+    // Save to Supabase
     await saveStrategies(strategies);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/admin");
+    revalidatePath("/strategies");
 
     return { success: true, id: strategy.id };
 }
@@ -114,8 +123,12 @@ export async function deleteStrategy(id: string) {
     // Filter out the deleted one
     strategies = strategies.filter(s => s.id !== id);
 
-    // Save to file
+    // Save to Supabase
     await saveStrategies(strategies);
+
+    revalidatePath("/", "layout");
+    revalidatePath("/admin");
+    revalidatePath("/strategies");
 
     return { success: true };
 }
