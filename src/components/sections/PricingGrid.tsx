@@ -131,15 +131,21 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                         {/* Limited Seats Indicator */}
                         <div className="space-y-2 pt-2">
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-amber-400 font-medium flex items-center gap-1.5 animate-pulse">
-                                    <Zap className="h-4 w-4" fill="currentColor" />
-                                    Only {proTier.seatsRemaining} seats left
-                                </span>
+                                {proTier.seatsRemaining > 0 ? (
+                                    <span className="text-amber-400 font-medium flex items-center gap-1.5 animate-pulse">
+                                        <Zap className="h-4 w-4" fill="currentColor" />
+                                        Only {proTier.seatsRemaining} seats left
+                                    </span>
+                                ) : (
+                                    <span className="text-slate-400 font-medium flex items-center gap-1.5">
+                                        Wait for open spots
+                                    </span>
+                                )}
                                 <span className="text-slate-500 font-mono text-xs">{proTier.totalSeats - proTier.seatsRemaining}/{proTier.totalSeats} Taken</span>
                             </div>
                             <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"
+                                    className={cn("h-full rounded-full", proTier.seatsRemaining > 0 ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-slate-600")}
                                     style={{ width: `${((proTier.totalSeats - proTier.seatsRemaining) / proTier.totalSeats) * 100}%` }}
                                 />
                             </div>
@@ -198,15 +204,21 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                         {/* Limited Seats Indicator */}
                         <div className="space-y-2 pt-2">
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-amber-400 font-medium flex items-center gap-1.5 animate-pulse">
-                                    <Zap className="h-4 w-4" fill="currentColor" />
-                                    Only {eliteTier.seatsRemaining} seats left
-                                </span>
+                                {eliteTier.seatsRemaining > 0 ? (
+                                    <span className="text-amber-400 font-medium flex items-center gap-1.5 animate-pulse">
+                                        <Zap className="h-4 w-4" fill="currentColor" />
+                                        Only {eliteTier.seatsRemaining} seats left
+                                    </span>
+                                ) : (
+                                    <span className="text-slate-400 font-medium flex items-center gap-1.5">
+                                        Wait for open spots
+                                    </span>
+                                )}
                                 <span className="text-slate-500 font-mono text-xs">{eliteTier.totalSeats - eliteTier.seatsRemaining}/{eliteTier.totalSeats} Taken</span>
                             </div>
                             <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                                 <div
-                                    className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"
+                                    className={cn("h-full rounded-full", eliteTier.seatsRemaining > 0 ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-slate-600")}
                                     style={{ width: `${((eliteTier.totalSeats - eliteTier.seatsRemaining) / eliteTier.totalSeats) * 100}%` }}
                                 />
                             </div>
