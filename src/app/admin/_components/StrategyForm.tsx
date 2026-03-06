@@ -161,7 +161,7 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
                                         id={`record-upload-${isNew ? 'new' : strategy.id}`}
                                         className="hidden"
                                         onChange={handleFileUpload}
-                                        accept=".pdf,image/*,.csv"
+                                        accept=".pdf,image/*,.csv,.xlsx,.xls,.txt,.doc,.docx"
                                     />
                                     <Button
                                         type="button"
