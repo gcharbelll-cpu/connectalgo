@@ -4,15 +4,27 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getStrategies, saveStrategies, Strategy } from "@/lib/data/strategies";
 
-// Simple hardcoded password for demo purposes
-// In production, use process.env.ADMIN_PASSWORD
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+import { getAdminsForAuth } from "@/lib/data/admins";
+
 const SESSION_COOKIE = "admin_session";
 
 export async function login(formData: FormData) {
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    if (password === ADMIN_PASSWORD) {
+    if (!email || !password) {
+        return { success: false, error: "Please provide both email and password" };
+    }
+
+    const admins = await getAdminsForAuth();
+
+    // Find matching admin
+    const validAdmin = admins.find(a =>
+        a.email.toLowerCase() === email.toLowerCase() &&
+        a.password === password
+    );
+
+    if (validAdmin) {
         (await cookies()).set(SESSION_COOKIE, "true", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
@@ -21,7 +33,7 @@ export async function login(formData: FormData) {
         });
         return { success: true };
     } else {
-        return { success: false, error: "Invalid password" };
+        return { success: false, error: "Invalid email or password" };
     }
 }
 

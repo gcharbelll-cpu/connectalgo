@@ -62,40 +62,59 @@ export default async function AdminDashboard() {
                     <h2 className="text-xl font-semibold text-white">Active Strategies</h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {strategies.map((strategy) => (
-                        <Card key={strategy.id} className="bg-slate-900 border-slate-800 hover:border-emerald-500/50 transition-colors">
-                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                                <CardTitle className="text-sm font-medium text-slate-200">
-                                    {strategy.name}
-                                </CardTitle>
-                                <div className="flex gap-1">
-                                    <Link href={`/admin/edit/${strategy.id}`}>
-                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white" title="Edit Strategy">
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                    </Link>
-                                    <DeleteStrategyButton strategyId={strategy.id} strategyName={strategy.name} />
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <Link href="/admin/add">
+                        <Card className="bg-slate-900 border-slate-800 hover:border-emerald-500/50 transition-colors cursor-pointer group h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
+                                <div className="bg-emerald-500/10 p-3 rounded-full group-hover:bg-emerald-500/20 transition-colors">
+                                    <Plus className="h-6 w-6 text-emerald-500" />
                                 </div>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-2xl font-bold text-white">+{strategy.roi}%</div>
-                                <p className="text-xs text-slate-500 mt-1">ROI</p>
-                                <div className="mt-4 flex justify-between text-sm">
-                                    <span className="text-slate-400">Monthly Price:</span>
-                                    <span className="text-emerald-400 font-mono">${strategy.price}</span>
-                                </div>
+                                <span className="font-medium text-slate-200">Add Strategy</span>
                             </CardContent>
                         </Card>
-                    ))}
+                    </Link>
 
-                    {/* Add New Strategy Button */}
-                    <Link href="/admin/add">
-                        <Card className="bg-slate-900/50 border-emerald-500/30 border-dashed flex items-center justify-center min-h-[200px] cursor-pointer hover:bg-emerald-950/20 hover:border-emerald-500 transition-colors group">
-                            <div className="text-center text-emerald-500/70 group-hover:text-emerald-400">
-                                <Plus className="h-8 w-8 mx-auto mb-2" />
-                                <span className="font-medium">Create New Strategy</span>
-                            </div>
+                    <Link href="/admin/users">
+                        <Card className="bg-slate-900 border-slate-800 hover:border-blue-500/50 transition-colors cursor-pointer group h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
+                                <div className="bg-blue-500/10 p-3 rounded-full group-hover:bg-blue-500/20 transition-colors">
+                                    <Users className="h-6 w-6 text-blue-500" />
+                                </div>
+                                <span className="font-medium text-slate-200">Manage Users</span>
+                            </CardContent>
+                        </Card>
+                    </Link>
+
+                    <Link href="/admin/testimonials">
+                        <Card className="bg-slate-900 border-slate-800 hover:border-amber-500/50 transition-colors cursor-pointer group h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
+                                <div className="bg-amber-500/10 p-3 rounded-full group-hover:bg-amber-500/20 transition-colors">
+                                    <span className="text-xl font-bold text-amber-500 leading-none">★</span>
+                                </div>
+                                <span className="font-medium text-slate-200">Manage Reviews</span>
+                            </CardContent>
+                        </Card>
+                    </Link>
+
+                    <Link href="/admin/faq">
+                        <Card className="bg-slate-900 border-slate-800 hover:border-purple-500/50 transition-colors cursor-pointer group h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
+                                <div className="bg-purple-500/10 p-3 rounded-full group-hover:bg-purple-500/20 transition-colors">
+                                    <span className="text-xl font-bold text-purple-500 leading-none">?</span>
+                                </div>
+                                <span className="font-medium text-slate-200">Manage FAQs</span>
+                            </CardContent>
+                        </Card>
+                    </Link>
+
+                    <Link href="/admin/admins">
+                        <Card className="bg-slate-900 border-slate-800 hover:border-rose-500/50 transition-colors cursor-pointer group h-full">
+                            <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-2">
+                                <div className="bg-rose-500/10 p-3 rounded-full group-hover:bg-rose-500/20 transition-colors">
+                                    <span className="text-xl font-bold text-rose-500 leading-none">🔑</span>
+                                </div>
+                                <span className="font-medium text-slate-200">System Admins</span>
+                            </CardContent>
                         </Card>
                     </Link>
                 </div>

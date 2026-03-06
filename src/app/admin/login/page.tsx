@@ -10,14 +10,18 @@ import { Lock } from "lucide-react";
 
 export default function AdminLogin() {
     const [error, setError] = useState("");
+    const [isPending, setIsPending] = useState(false);
     const router = useRouter();
 
     async function handleSubmit(formData: FormData) {
+        setIsPending(true);
+        setError("");
         const result = await login(formData);
         if (result.success) {
             router.push("/admin");
         } else {
             setError(result.error || "Login failed");
+            setIsPending(false);
         }
     }
 
@@ -32,14 +36,31 @@ export default function AdminLogin() {
                 </CardHeader>
                 <CardContent>
                     <form action={handleSubmit} className="space-y-4">
-                        <div className="space-y-2">
-                            <Input
-                                name="password"
-                                type="password"
-                                placeholder="Enter Password"
-                                className="bg-slate-950 border-slate-800 text-white"
-                                required
-                            />
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-slate-300" htmlFor="email">Email Address</label>
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    required
+                                    disabled={isPending}
+                                    className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-shadow"
+                                    placeholder="Enter admin email"
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-slate-300" htmlFor="password">Password</label>
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type="password"
+                                    required
+                                    disabled={isPending}
+                                    className="w-full bg-slate-950/50 border border-slate-700/50 rounded-lg px-4 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-shadow"
+                                    placeholder="Enter admin password"
+                                />
+                            </div>
                         </div>
                         {error && <p className="text-red-400 text-sm text-center">{error}</p>}
                         <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
