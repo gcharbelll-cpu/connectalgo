@@ -1,7 +1,6 @@
 "use server";
 
-import fs from "fs";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 export type SiteSettings = {
     id: string;
@@ -15,7 +14,21 @@ export type SiteSettings = {
     updated_at: string;
 };
 
-const DATA_FILE_PATH = path.join(process.cwd(), "src/lib/data/settings.json");
+// Ensure the environment variables exist
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error("Missing Supabase environment variables");
+}
+
+// We use the service role key here to bypass any potential Row Level Security on the server
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+        auth: {
+            persistSession: false,
+        }
+    }
+);
 
 const defaultSettings: SiteSettings = {
     id: 'site_settings',
@@ -31,15 +44,20 @@ const defaultSettings: SiteSettings = {
 
 export async function getSiteSettings(): Promise<SiteSettings> {
     try {
-        if (!fs.existsSync(DATA_FILE_PATH)) {
-            // If file doesn't exist, return default settings
+        const { data, error } = await supabase
+            .from("settings")
+            .select("*")
+            .limit(1)
+            .single();
+
+        if (error || !data) {
+            // Return defaults if table is empty or missing
             return defaultSettings;
         }
 
-        const fileContent = fs.readFileSync(DATA_FILE_PATH, "utf-8");
-        return JSON.parse(fileContent);
+        return data as SiteSettings;
     } catch (error) {
-        console.error("Error reading site settings:", error);
+        console.error("Error reading site settings from Supabase:", error);
         return defaultSettings;
     }
 }
@@ -48,16 +66,25 @@ export async function updateSiteSettings(settings: Partial<SiteSettings>) {
     try {
         const currentSettings = await getSiteSettings();
 
+        // Standardize the ID we use to always have one row
+        const recordId = currentSettings.id === 'fallback' ? 'fallback' : 'site_settings';
+
         const newSettings = {
             ...currentSettings,
             ...settings,
+            id: recordId,
             updated_at: new Date().toISOString()
         };
 
-        fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(newSettings, null, 2), "utf-8");
+        const { error } = await supabase
+            .from("settings")
+            .upsert([newSettings]);
+
+        if (error) throw error;
+
         return { success: true };
-    } catch (error) {
-        console.error("Error updating site settings:", error);
-        throw new Error("Failed to save site settings to file");
+    } catch (error: any) {
+        console.error("Error updating site settings in Supabase:", error);
+        throw new Error(error.message || "Failed to save site settings to Supabase");
     }
 }
