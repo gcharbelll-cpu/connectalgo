@@ -1,5 +1,4 @@
-import fs from "fs";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 export interface Strategy {
   id: string;
@@ -37,15 +36,34 @@ export interface Strategy {
   };
 }
 
-const DATA_FILE_PATH = path.join(process.cwd(), "src/lib/data/strategies.json");
+// Ensure the environment variables exist
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  throw new Error("Missing Supabase environment variables");
+}
+
+// We use the service role key here to bypass any potential Row Level Security on the server
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
+  {
+    auth: {
+      persistSession: false,
+    }
+  }
+);
 
 // Helper to get strategies (server-side only)
 export async function getStrategies(): Promise<Strategy[]> {
   try {
-    const fileContent = fs.readFileSync(DATA_FILE_PATH, "utf-8");
-    return JSON.parse(fileContent);
+    const { data, error } = await supabase
+      .from("strategies")
+      .select("*")
+      .order("created_at", { ascending: true });
+
+    if (error) throw error;
+    return data as Strategy[];
   } catch (error) {
-    console.error("Error reading strategies file:", error);
+    console.error("Error reading strategies from Supabase:", error);
     return [];
   }
 }
@@ -53,15 +71,27 @@ export async function getStrategies(): Promise<Strategy[]> {
 // Helper to save strategies (server-side only)
 export async function saveStrategies(strategies: Strategy[]): Promise<void> {
   try {
-    fs.writeFileSync(DATA_FILE_PATH, JSON.stringify(strategies, null, 2), "utf-8");
+    // Upsert all records
+    const { error } = await supabase
+      .from("strategies")
+      .upsert(strategies);
+
+    if (error) throw error;
+
+    // Clean up deletions
+    const { data: currentDbStrategies } = await supabase.from("strategies").select("id");
+    if (currentDbStrategies) {
+      const newIds = strategies.map(s => s.id);
+      const idsToDelete = currentDbStrategies
+        .map(dbS => dbS.id)
+        .filter(id => !newIds.includes(id));
+
+      if (idsToDelete.length > 0) {
+        await supabase.from("strategies").delete().in("id", idsToDelete);
+      }
+    }
   } catch (error) {
-    console.error("Error saving strategies file:", error);
+    console.error("Error saving strategies to Supabase:", error);
     throw new Error("Failed to save strategies");
   }
 }
-
-// Fallback for client-side usage if needed (though we should avoid using this directly in client components if we want real-time updates)
-// We export a static version for components that might still be importing it directly, 
-// but we should refactor them to use the async getter or pass data as props.
-import data from "./strategies.json";
-export const strategies: Strategy[] = data as Strategy[];
