@@ -138,7 +138,7 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                                     </span>
                                 ) : (
                                     <span className="text-slate-400 font-medium flex items-center gap-1.5">
-                                        Wait for open spots
+                                        Full - Wait for open spots
                                     </span>
                                 )}
                                 <span className="text-slate-500 font-mono text-xs">{proTier.totalSeats - proTier.seatsRemaining}/{proTier.totalSeats} Taken</span>
@@ -211,7 +211,7 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                                     </span>
                                 ) : (
                                     <span className="text-slate-400 font-medium flex items-center gap-1.5">
-                                        Wait for open spots
+                                        Full - Wait for open spots
                                     </span>
                                 )}
                                 <span className="text-slate-500 font-mono text-xs">{eliteTier.totalSeats - eliteTier.seatsRemaining}/{eliteTier.totalSeats} Taken</span>
