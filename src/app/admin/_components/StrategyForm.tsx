@@ -18,6 +18,12 @@ interface StrategyFormProps {
     isNew?: boolean;
 }
 
+const defaultAdvancedMetrics = {
+    totalTrades: 0, winRate: 0, profitFactor: 0, sharpeRatio: 0,
+    sortinoRatio: 0, maxDrawdown: 0, avgTrade: 0, bestTrade: 0,
+    worstTrade: 0, recoveryFactor: 0
+};
+
 export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
     const [formData, setFormData] = useState<Strategy>(strategy);
     const [loading, setLoading] = useState(false);
@@ -237,6 +243,57 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
                         <div className="space-y-2">
                             <label className="text-sm text-slate-400">Yearly Price ($)</label>
                             <Input type="number" step="0.01" name="priceYearly" value={formData.priceYearly} onChange={handleChange} className="bg-slate-950 border-slate-800" />
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-slate-900 border-slate-800 md:col-span-2">
+                    <CardHeader>
+                        <CardTitle className="text-white">Advanced Metrics (Verified Record)</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <p className="text-xs text-slate-500 -mt-2 mb-2">These values are displayed on the Verified Record page. Leave at 0 if not applicable.</p>
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Total Trades</label>
+                                <Input type="number" value={formData.advancedMetrics?.totalTrades ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, totalTrades: parseInt(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Win Rate (%)</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.winRate ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, winRate: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Profit Factor</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.profitFactor ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, profitFactor: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Sharpe Ratio</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.sharpeRatio ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, sharpeRatio: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Sortino Ratio</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.sortinoRatio ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, sortinoRatio: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Max Drawdown (%)</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.maxDrawdown ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, maxDrawdown: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Avg Trade (%)</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.avgTrade ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, avgTrade: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Best Trade (%)</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.bestTrade ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, bestTrade: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Worst Trade (%)</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.worstTrade ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, worstTrade: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm text-slate-400">Recovery Factor</label>
+                                <Input type="number" step="0.01" value={formData.advancedMetrics?.recoveryFactor ?? 0} onChange={(e) => setFormData(prev => ({ ...prev, advancedMetrics: { ...defaultAdvancedMetrics, ...prev.advancedMetrics, recoveryFactor: parseFloat(e.target.value) || 0 } }))} className="bg-slate-950 border-slate-800" />
+                            </div>
                         </div>
                     </CardContent>
                 </Card>

@@ -15,12 +15,20 @@ export function PerformanceOverview({ strategy, trades }: PerformanceOverviewPro
     const metrics = strategy.advancedMetrics;
     if (!metrics) return <div className="text-slate-500">No advanced metrics available.</div>;
 
+    // Helper for sign-aware formatting with fixed precision
+    const formatSigned = (val: number) => {
+        const fixed = val.toFixed(2);
+        return val >= 0 ? `+${fixed}%` : `${fixed}%`;
+    };
+
+    const roi = parseFloat(strategy.roi.toFixed(2));
+
     const cards = [
         {
             label: "Net Profit",
-            value: `+${strategy.roi}%`,
+            value: formatSigned(roi),
             icon: TrendingUp,
-            color: "text-emerald-400",
+            color: roi >= 0 ? "text-emerald-400" : "text-red-400",
             sub: "Total Return"
         },
         {
@@ -53,21 +61,21 @@ export function PerformanceOverview({ strategy, trades }: PerformanceOverviewPro
         },
         {
             label: "Avg Trade",
-            value: `+${metrics.avgTrade}%`,
-            icon: ArrowUpRight,
-            color: "text-emerald-400",
+            value: formatSigned(metrics.avgTrade),
+            icon: metrics.avgTrade >= 0 ? ArrowUpRight : ArrowDownRight,
+            color: metrics.avgTrade >= 0 ? "text-emerald-400" : "text-red-400",
             sub: "Expectancy per Trade"
         },
         {
             label: "Best Trade",
-            value: `+${metrics.bestTrade}%`,
+            value: formatSigned(metrics.bestTrade),
             icon: ArrowUpRight,
             color: "text-emerald-400",
             sub: "Largest Win"
         },
         {
             label: "Worst Trade",
-            value: `-${metrics.worstTrade}%`,
+            value: formatSigned(metrics.worstTrade),
             icon: ArrowDownRight,
             color: "text-red-400",
             sub: "Largest Loss"
