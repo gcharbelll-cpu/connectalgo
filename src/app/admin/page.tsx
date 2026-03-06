@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
                 </div>
 
                 <div className="mb-4">
-                    <h2 className="text-xl font-semibold text-white">Active Strategies</h2>
+                    <h2 className="text-xl font-semibold text-white">Quick Links</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
@@ -117,6 +117,54 @@ export default async function AdminDashboard() {
                             </CardContent>
                         </Card>
                     </Link>
+                </div>
+
+                <div className="mt-12 mb-6 flex justify-between items-center">
+                    <h2 className="text-xl font-semibold text-white">Manage Strategies</h2>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {strategies.map((strategy) => (
+                        <Card key={strategy.id} className="bg-slate-900 border-slate-800 hover:border-emerald-500/50 transition-colors flex flex-col">
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                <CardTitle className="text-lg font-medium text-slate-200">
+                                    {strategy.name}
+                                </CardTitle>
+                                <div className="flex gap-1">
+                                    <Link href={`/admin/edit/${strategy.id}`}>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-white" title="Edit Strategy">
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                    <DeleteStrategyButton strategyId={strategy.id} strategyName={strategy.name} />
+                                </div>
+                            </CardHeader>
+                            <CardContent className="flex-1">
+                                <div className="text-2xl font-bold text-white">+{strategy.roi}%</div>
+                                <p className="text-xs text-slate-500 mt-1">Total ROI</p>
+                                <div className="mt-4 flex justify-between text-sm">
+                                    <span className="text-slate-400">Monthly Price:</span>
+                                    <span className="text-emerald-400 font-mono">${strategy.price}</span>
+                                </div>
+                                <div className="mt-2 flex justify-between text-sm">
+                                    <span className="text-slate-400">Subscribers:</span>
+                                    <span className="text-blue-400 font-mono">{strategy.subscribers}</span>
+                                </div>
+                                <div className="mt-4 pt-4 border-t border-slate-800">
+                                    <Link href={`/admin/edit/${strategy.id}`}>
+                                        <Button variant="outline" className="w-full bg-slate-800 border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700">
+                                            Edit Details
+                                        </Button>
+                                    </Link>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                    {strategies.length === 0 && (
+                        <div className="col-span-full py-12 text-center text-slate-500 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed">
+                            No strategies found. Click "Add Strategy" to create one.
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
