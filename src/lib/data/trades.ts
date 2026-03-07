@@ -1,5 +1,4 @@
-import fs from "fs";
-import path from "path";
+import { createClient } from "@supabase/supabase-js";
 
 export interface Trade {
     id: string;
@@ -20,20 +19,66 @@ export interface Trade {
     drawdown?: number; // Adverse excursion %
 }
 
-const DATA_FILE_PATH = path.join(process.cwd(), "src/lib/data/trades.json");
+// Ensure the environment variables exist
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error("Missing Supabase environment variables");
+}
+
+const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    {
+        auth: {
+            persistSession: false,
+        }
+    }
+);
 
 export async function getTrades(strategyId?: string): Promise<Trade[]> {
     try {
-        const fileContent = fs.readFileSync(DATA_FILE_PATH, "utf-8");
-        const trades: Trade[] = JSON.parse(fileContent);
+        let query = supabase
+            .from("trades")
+            .select("*")
+            .order("date", { ascending: true });
 
         if (strategyId) {
-            return trades.filter(t => t.strategyId === strategyId);
+            query = query.eq("strategyId", strategyId);
         }
 
-        return trades;
+        const { data, error } = await query;
+
+        if (error) throw error;
+        return (data || []) as Trade[];
     } catch (error) {
-        console.error("Error reading trades file:", error);
+        console.error("Error reading trades from Supabase:", error);
         return [];
+    }
+}
+
+export async function saveTrades(trades: Trade[], strategyId: string): Promise<void> {
+    try {
+        // Delete existing trades for this strategy
+        const { error: deleteError } = await supabase
+            .from("trades")
+            .delete()
+            .eq("strategyId", strategyId);
+
+        if (deleteError) throw deleteError;
+
+        if (trades.length === 0) return;
+
+        // Insert in batches of 500 to avoid payload limits
+        const batchSize = 500;
+        for (let i = 0; i < trades.length; i += batchSize) {
+            const batch = trades.slice(i, i + batchSize);
+            const { error: insertError } = await supabase
+                .from("trades")
+                .insert(batch);
+
+            if (insertError) throw insertError;
+        }
+    } catch (error) {
+        console.error("Error saving trades to Supabase:", error);
+        throw new Error("Failed to save trades");
     }
 }

@@ -2,9 +2,8 @@
 
 import { checkAuth } from "./actions";
 import { getStrategies, saveStrategies, Strategy } from "@/lib/data/strategies";
+import { saveTrades } from "@/lib/data/trades";
 import { revalidatePath } from "next/cache";
-import fs from "fs";
-import path from "path";
 
 // Excel date serial number to ISO string
 function excelDateToISO(serial: number | string): string {
@@ -184,18 +183,8 @@ export async function importTradesFromExcel(strategyId: string, formData: FormDa
         });
         advancedMetrics!.maxDrawdown = parseFloat(maxDrawdown.toFixed(2));
 
-        // --- 4. Save trades to trades.json ---
-        const tradesFilePath = path.join(process.cwd(), "src/lib/data/trades.json");
-        let existingTrades: TradeRecord[] = [];
-        try {
-            const content = fs.readFileSync(tradesFilePath, "utf-8");
-            existingTrades = JSON.parse(content);
-        } catch { /* file doesn't exist yet */ }
-
-        // Remove old trades for this strategy, add new ones
-        const otherTrades = existingTrades.filter(t => t.strategyId !== strategyId);
-        const finalTrades = [...otherTrades, ...sortedTrades];
-        fs.writeFileSync(tradesFilePath, JSON.stringify(finalTrades, null, 2));
+        // --- 4. Save trades to Supabase ---
+        await saveTrades(sortedTrades, strategyId);
 
         // --- 5. Update strategy in Supabase ---
         const strategies = await getStrategies();
