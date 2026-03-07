@@ -137,15 +137,15 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                                         Only {proTier.seatsRemaining} seats left
                                     </span>
                                 ) : (
-                                    <span className="text-slate-400 font-medium flex items-center gap-1.5">
+                                    <span className="text-red-400 font-medium flex items-center gap-1.5">
                                         Full - Wait for open spots
                                     </span>
                                 )}
-                                <span className="text-slate-500 font-mono text-xs">{proTier.totalSeats - proTier.seatsRemaining}/{proTier.totalSeats} Taken</span>
+                                <span className={`font-mono text-xs ${proTier.seatsRemaining > 0 ? 'text-slate-500' : 'text-red-400/70'}`}>{proTier.totalSeats - proTier.seatsRemaining}/{proTier.totalSeats} Taken</span>
                             </div>
                             <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                                 <div
-                                    className={cn("h-full rounded-full", proTier.seatsRemaining > 0 ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-slate-600")}
+                                    className={cn("h-full rounded-full", proTier.seatsRemaining > 0 ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-gradient-to-r from-red-600 to-red-400")}
                                     style={{ width: `${((proTier.totalSeats - proTier.seatsRemaining) / proTier.totalSeats) * 100}%` }}
                                 />
                             </div>
@@ -210,15 +210,15 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                                         Only {eliteTier.seatsRemaining} seats left
                                     </span>
                                 ) : (
-                                    <span className="text-slate-400 font-medium flex items-center gap-1.5">
+                                    <span className="text-red-400 font-medium flex items-center gap-1.5">
                                         Full - Wait for open spots
                                     </span>
                                 )}
-                                <span className="text-slate-500 font-mono text-xs">{eliteTier.totalSeats - eliteTier.seatsRemaining}/{eliteTier.totalSeats} Taken</span>
+                                <span className={`font-mono text-xs ${eliteTier.seatsRemaining > 0 ? 'text-slate-500' : 'text-red-400/70'}`}>{eliteTier.totalSeats - eliteTier.seatsRemaining}/{eliteTier.totalSeats} Taken</span>
                             </div>
                             <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden">
                                 <div
-                                    className={cn("h-full rounded-full", eliteTier.seatsRemaining > 0 ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-slate-600")}
+                                    className={cn("h-full rounded-full", eliteTier.seatsRemaining > 0 ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-gradient-to-r from-red-600 to-red-400")}
                                     style={{ width: `${((eliteTier.totalSeats - eliteTier.seatsRemaining) / eliteTier.totalSeats) * 100}%` }}
                                 />
                             </div>
