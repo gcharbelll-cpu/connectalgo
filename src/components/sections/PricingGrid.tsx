@@ -74,8 +74,8 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
             "Exclusive High-Risk Presets",
             "1-on-1 Setup Strategy Call"
         ],
-        seatsRemaining: 5,
-        totalSeats: 25
+        seatsRemaining: eliteRemaining,
+        totalSeats: eliteTotal
     };
 
     return (
