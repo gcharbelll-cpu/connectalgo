@@ -5,18 +5,16 @@ import { getStrategies, saveStrategies, Strategy } from "@/lib/data/strategies";
 import { saveTrades } from "@/lib/data/trades";
 import { revalidatePath } from "next/cache";
 
-// Excel date serial number to ISO string
+// Excel date serial number to ISO string (UTC-based to avoid timezone shifts)
 function excelDateToISO(serial: number | string): string {
     if (typeof serial === 'string') return new Date(serial).toISOString();
-    const utc_days = Math.floor(serial - 25569);
-    const utc_value = utc_days * 86400;
-    const date_info = new Date(utc_value * 1000);
-    const fractional_day = serial - Math.floor(serial) + 0.0000001;
-    const total_seconds = Math.floor(86400 * fractional_day);
-    const seconds = total_seconds % 60;
-    const hours = Math.floor(total_seconds / (60 * 60));
-    const minutes = Math.floor(total_seconds / 60) % 60;
-    return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds).toISOString();
+    // Excel epoch: Jan 1, 1900. JS epoch: Jan 1, 1970. Offset: 25569 days.
+    const totalDays = serial - 25569;
+    const wholeDays = Math.floor(totalDays);
+    const fractionalDay = totalDays - wholeDays;
+    // Convert to milliseconds from epoch
+    const ms = wholeDays * 86400000 + Math.round(fractionalDay * 86400000);
+    return new Date(ms).toISOString();
 }
 
 // Find a value in sheet data by row label
@@ -170,18 +168,10 @@ export async function importTradesFromExcel(strategyId: string, formData: FormDa
             });
         });
 
-        // --- 3. Compute Max Drawdown from equity curve ---
+        // --- 3. Extract Max Drawdown from Performance sheet ---
         const sortedTrades = [...parsedTrades].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        let peakEquity = 0;
-        let currentEquity = 0;
-        let maxDrawdown = 0;
-        sortedTrades.forEach(trade => {
-            currentEquity += trade.pnl;
-            if (currentEquity > peakEquity) peakEquity = currentEquity;
-            const dd = peakEquity - currentEquity;
-            if (dd > maxDrawdown) maxDrawdown = dd;
-        });
-        advancedMetrics!.maxDrawdown = parseFloat(maxDrawdown.toFixed(2));
+        const maxDrawdownPct = parseFloat(getValue(performanceData, 'Max equity drawdown (close-to-close)', 2)) || 0;
+        advancedMetrics!.maxDrawdown = Math.abs(maxDrawdownPct);
 
         // --- 4. Save trades to Supabase ---
         await saveTrades(sortedTrades, strategyId);
