@@ -71,7 +71,8 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
                 setFormData(prev => ({
                     ...prev,
                     roi: result.roi ?? prev.roi,
-                    advancedMetrics: result.metrics ?? prev.advancedMetrics
+                    advancedMetrics: result.metrics ?? prev.advancedMetrics,
+                    history: result.history ?? prev.history
                 }));
                 alert(`Successfully imported ${result.tradesImported} trades! ROI: ${result.roi}%. Don't forget to Save Changes.`);
             } else {

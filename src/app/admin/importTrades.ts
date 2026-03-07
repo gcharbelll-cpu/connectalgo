@@ -190,6 +190,23 @@ export async function importTradesFromExcel(strategyId: string, formData: FormDa
             strategies[strategyIndex].winRate = advancedMetrics!.winRate;
         }
 
+        // --- 6. Compute monthly Trading History from trades ---
+        const monthlyPnL = new Map<string, number>();
+        sortedTrades.forEach(trade => {
+            const d = new Date(trade.date);
+            const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
+            monthlyPnL.set(key, (monthlyPnL.get(key) || 0) + trade.pnl);
+        });
+
+        const history = Array.from(monthlyPnL.entries())
+            .sort((a, b) => a[0].localeCompare(b[0]))
+            .map(([date, profit]) => ({
+                date,
+                profit: parseFloat(profit.toFixed(2))
+            }));
+
+        strategies[strategyIndex].history = history;
+
         await saveStrategies(strategies);
 
         revalidatePath("/", "layout");
@@ -200,7 +217,8 @@ export async function importTradesFromExcel(strategyId: string, formData: FormDa
             success: true,
             tradesImported: parsedTrades.length,
             metrics: advancedMetrics,
-            roi: netProfit
+            roi: netProfit,
+            history
         };
 
     } catch (error: any) {
