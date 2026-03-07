@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { updateStrategy, addStrategy, uploadStrategyRecord } from "../actions";
+import { importTradesFromExcel } from "../importTrades";
 import { useRouter } from "next/navigation";
-import { Save, ArrowLeft, Loader2, Plus, Trash2 } from "lucide-react";
+import { Save, ArrowLeft, Loader2, Plus, Trash2, FileSpreadsheet } from "lucide-react";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -28,6 +29,7 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
     const [formData, setFormData] = useState<Strategy>(strategy);
     const [loading, setLoading] = useState(false);
     const [uploadingRecord, setUploadingRecord] = useState(false);
+    const [importingTrades, setImportingTrades] = useState(false);
     const router = useRouter();
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +53,37 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
             alert("An error occurred during upload.");
         } finally {
             setUploadingRecord(false);
+        }
+    };
+
+    const handleExcelImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setImportingTrades(true);
+        try {
+            const uploadData = new FormData();
+            uploadData.append("file", file);
+
+            const result = await importTradesFromExcel(formData.id, uploadData);
+            if (result.success) {
+                // Update form with parsed data
+                setFormData(prev => ({
+                    ...prev,
+                    roi: result.roi ?? prev.roi,
+                    advancedMetrics: result.metrics ?? prev.advancedMetrics
+                }));
+                alert(`Successfully imported ${result.tradesImported} trades! ROI: ${result.roi}%. Don't forget to Save Changes.`);
+            } else {
+                alert(result.error || "Failed to import trades.");
+            }
+        } catch (error) {
+            console.error("Import error:", error);
+            alert("An error occurred during import.");
+        } finally {
+            setImportingTrades(false);
+            // Reset file input
+            e.target.value = '';
         }
     };
 
@@ -184,6 +217,32 @@ export function StrategyForm({ strategy, isNew = false }: StrategyFormProps) {
                                 <p className="text-xs text-emerald-400 mt-1">
                                     Current file: <a href={formData.provenRecordUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-emerald-300">View Active File</a>
                                 </p>
+                            )}
+                            {!isNew && (
+                                <div className="mt-3 pt-3 border-t border-slate-800">
+                                    <label className="text-sm text-slate-400 block mb-2">Import Trades from Excel (.xlsx)</label>
+                                    <input
+                                        type="file"
+                                        id={`excel-import-${strategy.id}`}
+                                        className="hidden"
+                                        onChange={handleExcelImport}
+                                        accept=".xlsx,.xls"
+                                    />
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        className="w-full border-emerald-700/50 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-900/50 hover:text-emerald-300"
+                                        onClick={() => document.getElementById(`excel-import-${strategy.id}`)?.click()}
+                                        disabled={importingTrades}
+                                    >
+                                        {importingTrades ? (
+                                            <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Importing...</>
+                                        ) : (
+                                            <><FileSpreadsheet className="h-4 w-4 mr-2" /> Import Trades from Excel</>
+                                        )}
+                                    </Button>
+                                    <p className="text-[10px] text-slate-600 mt-1">Parses Performance, Trades Analysis, and List of Trades sheets. Updates ROI, metrics, and all trades.</p>
+                                </div>
                             )}
                         </div>
                     </CardContent>
