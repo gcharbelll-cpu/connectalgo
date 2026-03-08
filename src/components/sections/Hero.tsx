@@ -101,7 +101,7 @@ export function Hero({ settings }: HeroProps) {
                         className="grid grid-cols-3 gap-4 md:gap-8 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 mt-8 backdrop-blur-md"
                     >
                         <div className="flex flex-col">
-                            <span className="text-slate-400 text-xs md:text-sm uppercase tracking-wider font-medium">Total Return</span>
+                            <span className="text-slate-400 text-xs md:text-sm uppercase tracking-wider font-medium">Yearly Return</span>
                             <span className="text-2xl md:text-4xl font-bold text-emerald-400 mt-1">{totalReturn}</span>
                         </div>
                         <div className="flex flex-col border-x border-slate-800/50 px-4 md:px-8">

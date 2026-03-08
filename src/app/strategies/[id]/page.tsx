@@ -68,7 +68,7 @@ export default async function StrategyPage({ params }: { params: Promise<{ id: s
                     </div>
                     <div className="text-right">
                         <div className="text-emerald-400 text-4xl md:text-5xl font-bold mb-1">+{strategy.roi}%</div>
-                        <div className="text-slate-500 uppercase tracking-widest text-xs">Total Return</div>
+                        <div className="text-slate-500 uppercase tracking-widest text-xs">Yearly Return</div>
                     </div>
                 </div>
 

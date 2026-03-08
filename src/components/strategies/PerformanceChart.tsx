@@ -41,11 +41,11 @@ export function PerformanceChart({ data }: PerformanceChartProps) {
                         contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f8fafc' }}
                         itemStyle={{ color: '#34d399' }}
                         formatter={(value: number | string | Array<number | string> | undefined) => {
-                            if (value === undefined) return ["", "Total Return"];
+                            if (value === undefined) return ["", "Yearly Return"];
                             const val = Array.isArray(value) ? value[0] : value;
                             return [
                                 typeof val === 'number' ? `${val.toFixed(2)}%` : val,
-                                "Total Return"
+                                "Yearly Return"
                             ];
                         }}
                     />

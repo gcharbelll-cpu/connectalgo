@@ -122,7 +122,7 @@ export function SettingsForm({ initialSettings, onSave }: SettingsFormProps) {
                         <h3 className="font-medium text-cyan-400">Hero Section Stats</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div className="space-y-2">
-                                <Label htmlFor="hero_total_return" className="text-slate-300">Total Return</Label>
+                                <Label htmlFor="hero_total_return" className="text-slate-300">Yearly Return</Label>
                                 <Input
                                     id="hero_total_return"
                                     name="hero_total_return"

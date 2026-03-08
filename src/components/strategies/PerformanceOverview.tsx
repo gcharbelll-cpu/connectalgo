@@ -29,7 +29,7 @@ export function PerformanceOverview({ strategy, trades }: PerformanceOverviewPro
             value: formatSigned(roi),
             icon: TrendingUp,
             color: roi >= 0 ? "text-emerald-400" : "text-red-400",
-            sub: "Total Return"
+            sub: "Yearly Return"
         },
         {
             label: "Win Rate",

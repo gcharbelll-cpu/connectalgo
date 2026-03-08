@@ -141,7 +141,7 @@ export default async function AdminDashboard() {
                             </CardHeader>
                             <CardContent className="flex-1">
                                 <div className="text-2xl font-bold text-white">+{strategy.roi}%</div>
-                                <p className="text-xs text-slate-500 mt-1">Total ROI</p>
+                                <p className="text-xs text-slate-500 mt-1">Yearly ROI</p>
                                 <div className="mt-4 flex justify-between text-sm">
                                     <span className="text-slate-400">Monthly Price:</span>
                                     <span className="text-emerald-400 font-mono">${strategy.price}</span>
