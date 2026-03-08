@@ -111,15 +111,6 @@ export function ProfitCalculator({ avgMonthlyReturn }: ProfitCalculatorProps) {
                     </div>
                 </div>
 
-                <div className="flex items-center justify-between">
-                    <Label className="text-xs text-slate-400 cursor-pointer" htmlFor="compounding">Compounding</Label>
-                    <Switch
-                        id="compounding"
-                        checked={isCompounding}
-                        onCheckedChange={setIsCompounding}
-                        className="data-[state=checked]:bg-emerald-600"
-                    />
-                </div>
 
                 <div className="pt-4 border-t border-slate-800">
                     <div className="text-xs text-slate-500 mb-1">Projected Balance</div>
