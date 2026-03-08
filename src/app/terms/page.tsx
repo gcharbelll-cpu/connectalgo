@@ -81,10 +81,6 @@ export default function Terms() {
                             We reserve the right to modify these Terms at any time. Continued use of the Service constitutes acceptance of the modified Terms.
                         </p>
                     </section>
-
-                    <div className="pt-8 border-t border-slate-800 text-sm text-slate-500">
-                        Last Updated: {new Date().toLocaleDateString()}
-                    </div>
                 </div>
             </main>
             <Footer />

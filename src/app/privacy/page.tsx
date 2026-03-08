@@ -69,10 +69,6 @@ export default function Privacy() {
                             If you have any questions about this Privacy Policy, please contact us via our official WhatsApp support channel.
                         </p>
                     </section>
-
-                    <div className="pt-8 border-t border-slate-800 text-sm text-slate-500">
-                        Last Updated: {new Date().toLocaleDateString()}
-                    </div>
                 </div>
             </main>
             <Footer />
