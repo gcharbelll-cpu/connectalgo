@@ -31,6 +31,7 @@ export default async function PricingPage() {
                     proRemaining={settings.pro_seats_remaining}
                     eliteTotal={settings.elite_seats_total}
                     eliteRemaining={settings.elite_seats_remaining}
+                    whatsappNumber={settings.whatsapp_number}
                 />
 
                 {/* FAQ Section */}

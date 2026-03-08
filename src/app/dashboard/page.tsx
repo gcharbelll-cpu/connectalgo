@@ -7,9 +7,11 @@ import { CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { getUserProfile } from "@/utils/supabase/queries";
 import { redirect } from "next/navigation";
+import { getSiteSettings } from "@/lib/data/settings";
 
 export default async function DashboardOverview() {
     const profile = await getUserProfile();
+    const settings = await getSiteSettings();
 
     if (!profile) {
         redirect("/sign-in");
@@ -110,7 +112,7 @@ export default async function DashboardOverview() {
                                 </ul>
                             </div>
                             <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20" asChild>
-                                <a href="https://wa.me/96176374971?text=Hi!%20I%20just%20created%20an%20account%20on%20Connect%20Algo%20and%20want%20to%20verify%20my%20payment%20receipt." target="_blank" rel="noopener noreferrer">
+                                <a href={`https://wa.me/${settings.whatsapp_number}?text=Hi!%20I%20just%20created%20an%20account%20on%20Connect%20Algo%20and%20want%20to%20verify%20my%20payment%20receipt.`} target="_blank" rel="noopener noreferrer">
                                     Message Support Team
                                 </a>
                             </Button>
@@ -165,7 +167,7 @@ export default async function DashboardOverview() {
 
                         <Button variant="outline" className="w-full mt-2 border-slate-700 text-slate-300 hover:bg-slate-800" asChild>
                             <a
-                                href="https://wa.me/96176374971?text=Hi!%20I%20need%20help%20managing%20my%20subscription."
+                                href={`https://wa.me/${settings.whatsapp_number}?text=Hi!%20I%20need%20help%20managing%20my%20subscription.`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block w-full"
@@ -197,7 +199,7 @@ export default async function DashboardOverview() {
 
                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2" asChild>
                             <a
-                                href="https://wa.me/96176374971?text=Hi!%20I%20would%20like%20my%20private%20Master%20Copy%20Trading%20link."
+                                href={`https://wa.me/${settings.whatsapp_number}?text=Hi!%20I%20would%20like%20my%20private%20Master%20Copy%20Trading%20link.`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block w-full"

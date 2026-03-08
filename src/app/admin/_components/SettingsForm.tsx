@@ -42,9 +42,10 @@ export function SettingsForm({ initialSettings, onSave }: SettingsFormProps) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
+        const isStringField = name.startsWith('hero_') || name === 'whatsapp_number';
         setSettings(prev => ({
             ...prev,
-            [name]: name.startsWith('hero_') ? value : (parseInt(value) || 0)
+            [name]: isStringField ? value : (parseInt(value) || 0)
         }));
     };
 
@@ -153,6 +154,28 @@ export function SettingsForm({ initialSettings, onSave }: SettingsFormProps) {
                                     className="bg-slate-900 border-slate-700 text-white"
                                 />
                             </div>
+                        </div>
+                    </div>
+
+                    {/* WhatsApp Setting */}
+                    <div className="p-4 rounded-lg bg-slate-950/50 border border-slate-800 space-y-4">
+                        <h3 className="font-medium text-emerald-500">
+                            WhatsApp Contact
+                        </h3>
+                        <div className="space-y-2">
+                            <Label htmlFor="whatsapp_number" className="text-slate-300">WhatsApp Number (e.g. 96176374971)</Label>
+                            <Input
+                                id="whatsapp_number"
+                                name="whatsapp_number"
+                                type="text"
+                                value={settings.whatsapp_number}
+                                onChange={handleChange}
+                                placeholder="Enter number without + or spaces"
+                                className="bg-slate-900 border-slate-700 text-white"
+                            />
+                            <p className="text-xs text-slate-500">
+                                This number will be used for all "Contact Us" and "Support" links on the site.
+                            </p>
                         </div>
                     </div>
 

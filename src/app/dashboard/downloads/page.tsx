@@ -7,9 +7,11 @@ import { Download, Lock, FileText, CheckCircle2, ArrowRight } from "lucide-react
 import Link from "next/link";
 import { requireAuth, getUserProfile } from "@/utils/supabase/queries";
 import { redirect } from "next/navigation";
+import { getSiteSettings } from "@/lib/data/settings";
 
 export default async function DownloadsDashboard() {
     const profile = await getUserProfile();
+    const settings = await getSiteSettings();
 
     if (!profile) {
         redirect("/sign-in");
@@ -119,7 +121,7 @@ export default async function DownloadsDashboard() {
                     <CardFooter className="pt-4 border-t border-slate-800/50">
                         <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20" asChild>
                             <a
-                                href="https://wa.me/96176374971?text=Hi!%20I%20need%20to%20download%20my%20MT4%20EA%20File."
+                                href={`https://wa.me/${settings.whatsapp_number}?text=Hi!%20I%20need%20to%20download%20my%20MT4%20EA%20File.`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center w-full"
@@ -153,7 +155,7 @@ export default async function DownloadsDashboard() {
                     <CardFooter className="pt-4 border-t border-slate-800/50">
                         <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-900/20" asChild>
                             <a
-                                href="https://wa.me/96176374971?text=Hi!%20I%20need%20to%20download%20my%20MT5%20EA%20File."
+                                href={`https://wa.me/${settings.whatsapp_number}?text=Hi!%20I%20need%20to%20download%20my%20MT5%20EA%20File.`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center justify-center w-full"

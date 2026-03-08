@@ -15,9 +15,10 @@ interface PricingGridProps {
     proRemaining: number;
     eliteTotal: number;
     eliteRemaining: number;
+    whatsappNumber: string;
 }
 
-export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining }: PricingGridProps) {
+export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining, whatsappNumber }: PricingGridProps) {
     const [period, setPeriod] = useState<BillingPeriod>("threeMonth");
 
     const getPriceLabel = () => {
@@ -167,7 +168,7 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                             className="w-full group bg-emerald-600/10 text-emerald-500 hover:bg-emerald-600 hover:text-white border border-emerald-500/50 h-14 text-lg"
                             asChild
                         >
-                            <a href={`https://wa.me/96176374971?text=${encodeURIComponent(`Hi, I'm interested in the ${proTier.name} subscription (${period} plan). How can I pay?`)}`} target="_blank" rel="noopener noreferrer">
+                            <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi, I'm interested in the ${proTier.name} subscription (${period} plan). How can I pay?`)}`} target="_blank" rel="noopener noreferrer">
                                 Choose Pro <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </a>
                         </Button>
@@ -240,7 +241,7 @@ export function PricingGrid({ proTotal, proRemaining, eliteTotal, eliteRemaining
                             className="w-full group bg-emerald-600 hover:bg-emerald-700 text-white h-14 text-lg"
                             asChild
                         >
-                            <a href={`https://wa.me/96176374971?text=${encodeURIComponent(`Hi, I'm ready to get the ${eliteTier.name} subscription (${period} plan). How can I pay?`)}`} target="_blank" rel="noopener noreferrer">
+                            <a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hi, I'm ready to get the ${eliteTier.name} subscription (${period} plan). How can I pay?`)}`} target="_blank" rel="noopener noreferrer">
                                 Get Elite Access <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </a>
                         </Button>

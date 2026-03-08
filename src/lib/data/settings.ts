@@ -11,6 +11,7 @@ export type SiteSettings = {
     hero_total_return: string;
     hero_active_investors: string;
     hero_strategies: string;
+    whatsapp_number: string;
     updated_at: string;
 };
 
@@ -39,6 +40,7 @@ const defaultSettings: SiteSettings = {
     hero_total_return: "+2,450%",
     hero_active_investors: "1,500+",
     hero_strategies: "4",
+    whatsapp_number: "96176374971",
     updated_at: new Date().toISOString()
 };
 
