@@ -148,9 +148,9 @@ export default async function StrategyPage({ params }: { params: Promise<{ id: s
                                 <PricingSelector strategy={strategy} />
                             </Card> */}
 
-                            <ProfitCalculator avgMonthlyReturn={
-                                strategy.history.reduce((acc, curr) => acc + curr.profit, 0) / strategy.history.length
-                            } />
+                            {/* <ProfitCalculator avgMonthlyReturn={
+    strategy.history.reduce((acc, curr) => acc + curr.profit, 0) / strategy.history.length
+} /> */}
 
                             <Card className="bg-slate-900/50 border-slate-800 opacity-70 hover:opacity-100 transition-opacity">
                                 <CardHeader>
