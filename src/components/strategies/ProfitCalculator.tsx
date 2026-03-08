@@ -15,7 +15,7 @@ interface ProfitCalculatorProps {
 export function ProfitCalculator({ avgMonthlyReturn }: ProfitCalculatorProps) {
     const [capital, setCapital] = useState<number>(10000);
     const [riskAmount, setRiskAmount] = useState<number>(100); // Risk per trade in $
-    const [isCompounding, setIsCompounding] = useState<boolean>(true);
+    const [isCompounding, setIsCompounding] = useState<boolean>(false);
     const [result, setResult] = useState<number | null>(null);
 
     // Heuristic: Assume the "Avg Monthly Return" passed in was achieved with a "Standard" risk.
