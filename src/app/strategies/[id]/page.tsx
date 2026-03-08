@@ -143,10 +143,10 @@ export default async function StrategyPage({ params }: { params: Promise<{ id: s
                     {/* Sidebar: Subscription */}
                     <div className="lg:col-span-1">
                         <div className="space-y-6">
-                            <Card className="bg-emerald-950/20 border-emerald-500/30 overflow-hidden">
+                            {/* <Card className="bg-emerald-950/20 border-emerald-500/30 overflow-hidden">
                                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-emerald-300"></div>
                                 <PricingSelector strategy={strategy} />
-                            </Card>
+                            </Card> */}
 
                             <ProfitCalculator avgMonthlyReturn={
                                 strategy.history.reduce((acc, curr) => acc + curr.profit, 0) / strategy.history.length
